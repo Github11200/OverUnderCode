@@ -23,6 +23,10 @@ motor_group Left = motor_group(FrontLeft, BackLeft);
 motor Catapult = motor(PORT10, ratio36_1, false);
 motor Intake = motor(PORT11, ratio36_1, false);
 
+// Sensors
+rotation CatapultRotationSensor = rotation(PORT12, false);
+inertial Inertial = inertial(PORT13);
+
 // VEXcode generated functions
 // define variable for remote controller enable/disable
 bool RemoteControlCodeEnabled = true;

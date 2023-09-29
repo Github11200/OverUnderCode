@@ -18,6 +18,10 @@ extern vex::motor_group Left;
 extern vex::motor Catapult;
 extern vex::motor Intake;
 
+// Sensors
+extern rotation CatapultRotationSensor;
+extern inertial Inertial;
+
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
  *

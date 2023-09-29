@@ -11,6 +11,7 @@
 
 // Include in the driver control files
 #include "../include/DriverControl/JoystickControl.h"
+#include "../include/DriverControl/Catapult.h"
 
 using namespace vex;
 
@@ -18,6 +19,8 @@ using namespace vex;
 competition Competition;
 
 // define your global instances of motors and other devices here
+vex::task joysticks;
+vex::task catapult;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -33,6 +36,7 @@ void pre_auton(void)
 {
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
+    CatapultRotationSensor.resetPosition();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -64,6 +68,10 @@ void autonomous(void)
 
 void usercontrol(void)
 {
+    // Initialize tasks
+    joysticks = vex::task(JoystickControl);
+    catapult = vex::task(CatapultButtons);
+
     // User control code here, inside the loop
     while (1)
     {
