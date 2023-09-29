@@ -13,6 +13,7 @@
 #include "../include/DriverControl/JoystickControl.h"
 #include "../include/DriverControl/Catapult.h"
 #include "../include/DriverControl/Intake.h"
+#include "../include/DriverControl/Wings.h"
 
 using namespace vex;
 
@@ -23,6 +24,7 @@ competition Competition;
 vex::task joysticks;
 vex::task catapult;
 vex::task intake;
+vex::task wings;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -74,6 +76,7 @@ void usercontrol(void)
     joysticks = vex::task(JoystickControl);
     catapult = vex::task(CatapultButtons);
     intake = vex::task(IntakeControl);
+    wings = vex::task(Wings);
 
     // User control code here, inside the loop
     while (1)

@@ -29,6 +29,8 @@ inertial Inertial = inertial(PORT13);
 
 // Pistons
 digital_out IntakePiston = digital_out(Brain.ThreeWirePort.A);
+digital_out LeftWing = digital_out(Brain.ThreeWirePort.B);
+digital_out RightWing = digital_out(Brain.ThreeWirePort.C);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable
