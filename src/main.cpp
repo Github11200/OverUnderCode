@@ -22,9 +22,7 @@ competition Competition;
 
 // define your global instances of motors and other devices here
 vex::task joysticks;
-vex::task catapult;
-vex::task intake;
-vex::task wings;
+vex::task buttons;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -70,13 +68,18 @@ void autonomous(void)
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+/// @brief This function handles all of the button inputs
+void Buttons() {
+    IntakeControl();
+    CatapultButtons();
+    Wings();
+}
+
 void usercontrol(void)
 {
     // Initialize tasks
     joysticks = vex::task(JoystickControl);
-    catapult = vex::task(CatapultButtons);
-    intake = vex::task(IntakeControl);
-    wings = vex::task(Wings);
+    buttons = vex::task(Buttons);
 
     // User control code here, inside the loop
     while (1)
