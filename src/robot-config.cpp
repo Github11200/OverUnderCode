@@ -27,6 +27,9 @@ motor Intake = motor(PORT11, ratio36_1, false);
 rotation CatapultRotationSensor = rotation(PORT12, false);
 inertial Inertial = inertial(PORT13);
 
+// Pistons
+digital_out IntakePiston = digital_out(Brain.ThreeWirePort.A);
+
 // VEXcode generated functions
 // define variable for remote controller enable/disable
 bool RemoteControlCodeEnabled = true;

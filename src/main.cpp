@@ -12,6 +12,7 @@
 // Include in the driver control files
 #include "../include/DriverControl/JoystickControl.h"
 #include "../include/DriverControl/Catapult.h"
+#include "../include/DriverControl/Intake.h"
 
 using namespace vex;
 
@@ -21,6 +22,7 @@ competition Competition;
 // define your global instances of motors and other devices here
 vex::task joysticks;
 vex::task catapult;
+vex::task intake;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -71,6 +73,7 @@ void usercontrol(void)
     // Initialize tasks
     joysticks = vex::task(JoystickControl);
     catapult = vex::task(CatapultButtons);
+    intake = vex::task(IntakeControl);
 
     // User control code here, inside the loop
     while (1)

@@ -37,6 +37,8 @@ int CatapultButtons()
 
         Catapult.stop(vex::brakeType::hold);
         isCatapultDown = true;
+
+        vex::task::sleep(25);
     }
 
     return 0;

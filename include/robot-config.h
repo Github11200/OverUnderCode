@@ -22,6 +22,9 @@ extern vex::motor Intake;
 extern rotation CatapultRotationSensor;
 extern inertial Inertial;
 
+// Pistons
+extern digital_out IntakePiston;
+
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
  *
