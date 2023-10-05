@@ -9,7 +9,12 @@
 
 #include "vex.h"
 
-// Include in the driver control files
+// Include the autonomous files
+#include "../include/Autonomous/Odometry/Odometry.h"
+#include "../include/Autonomous/PID/PID.h"
+#include "../include/Autonomous/PurePursuit/PurePursuit.h"
+
+// Include the driver control files
 #include "../include/DriverControl/JoystickControl.h"
 #include "../include/DriverControl/Catapult.h"
 #include "../include/DriverControl/Intake.h"
@@ -39,6 +44,11 @@ void pre_auton(void)
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
     CatapultRotationSensor.resetPosition();
+
+    // Set the brain screen to red while calibrating the intertial sensor
+    Brain.Screen.setFillColor(vex::color::red);
+    Brain.Screen.drawRectangle(0, 0, 479, 239);
+    Inertial.calibrate();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -56,6 +66,9 @@ void autonomous(void)
     // ..........................................................................
     // Insert autonomous user code here.
     // ..........................................................................
+
+    // Initialize the odometry class
+    Odometry odometry("NAME OF STARTING POSITION");
 }
 
 /*---------------------------------------------------------------------------*/
@@ -69,10 +82,18 @@ void autonomous(void)
 /*---------------------------------------------------------------------------*/
 
 /// @brief This function handles all of the button inputs
-void Buttons() {
-    IntakeControl();
-    CatapultButtons();
-    Wings();
+int Buttons()
+{
+    while (true)
+    {
+        IntakeControl();
+        CatapultButtons();
+        Wings();
+
+        vex::task::sleep(15);
+    }
+
+    return 0;
 }
 
 void usercontrol(void)
