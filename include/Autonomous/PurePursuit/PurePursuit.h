@@ -2,9 +2,10 @@
 
 using namespace vex;
 
-class PurePursuit() {
+class PurePursuit
+{
 public:
-    void GetGoalPoint() {
-        
+    void GetGoalPoint()
+    {
     }
-}
+};

@@ -13,6 +13,7 @@
 #include "../include/Autonomous/Odometry/Odometry.h"
 #include "../include/Autonomous/PID/PID.h"
 #include "../include/Autonomous/PurePursuit/PurePursuit.h"
+#include "../include/Autonomous/DriverAuto/DriverAutonomous.h"
 
 // Include the driver control files
 #include "../include/DriverControl/JoystickControl.h"
@@ -26,8 +27,10 @@ using namespace vex;
 competition Competition;
 
 // define your global instances of motors and other devices here
-vex::task joysticks;
-vex::task buttons;
+
+// Global variables
+Odometry odometry("NAME OF STARTING POSITION");
+DriverAutonomous driverAutonomous;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -61,14 +64,32 @@ void pre_auton(void)
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+/// @brief This function calls the method in the odometry class to update the robot position and orientation
+/// @return 0
+int callOdometryMethod()
+{
+    while (true)
+    {
+        odometry.UpdatePosition();
+        vex::task::sleep(10);
+    }
+
+    return 0;
+}
+
 void autonomous(void)
 {
     // ..........................................................................
     // Insert autonomous user code here.
     // ..........................................................................
 
-    // Initialize the odometry class
-    Odometry odometry("NAME OF STARTING POSITION");
+    // Start getting data about the position and orientation
+    task odom = task(callOdometryMethod);
+
+    // Destruct the odometry class to free up resources
+    odometry.~Odometry();
+
+    driverAutonomous.execute();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -82,6 +103,7 @@ void autonomous(void)
 /*---------------------------------------------------------------------------*/
 
 /// @brief This function handles all of the button inputs
+/// @return 0
 int Buttons()
 {
     while (true)
@@ -96,11 +118,25 @@ int Buttons()
     return 0;
 }
 
+/// @brief This function calls the record method to record buttons and joystick controls
+/// @return 0
+int RecordDriver()
+{
+    while (true)
+    {
+        driverAutonomous.record();
+        vex::task::sleep(10);
+    }
+
+    return 0;
+}
+
 void usercontrol(void)
 {
     // Initialize tasks
-    joysticks = vex::task(JoystickControl);
-    buttons = vex::task(Buttons);
+    task joysticks = task(JoystickControl);
+    task buttons = task(Buttons);
+    task recordDriver = task(RecordDriver);
 
     // User control code here, inside the loop
     while (1)
@@ -113,6 +149,10 @@ void usercontrol(void)
         // Insert user code here. This is where you use the joystick values to
         // update your motors, etc.
         // ........................................................................
+
+        // Once the driver presses the A button that is when you start recording the buttons and joysticks from the driver
+        if (Controller.ButtonA.pressing())
+            recordDriver = task(RecordDriver);
 
         wait(20, msec); // Sleep the task for a short amount of time to
                         // prevent wasted resources.

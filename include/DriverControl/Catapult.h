@@ -5,7 +5,6 @@ using namespace vex;
 /// @brief Rewinds and shoots the catapult based on where it is and the input from the controller
 int CatapultButtons()
 {
-    float targetValue = 0;
     bool isCatapultDown = true;
 
     while (true)
