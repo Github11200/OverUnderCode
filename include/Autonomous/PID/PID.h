@@ -1,5 +1,5 @@
 #include "vex.h"
-#include "../Odometry/Odometry.h"
+#include "../../global-variables.h"
 
 using namespace vex;
 
@@ -31,10 +31,6 @@ private:
         return minAngle;
     }
 
-    double radiansToDegrees(double radians)
-    {
-    }
-
 public:
     /// @brief This method will move the robot to a position on the field
     /// @param targetX The x position that you want the robot to move to on the field
@@ -60,7 +56,6 @@ public:
         double turnDerivative = 0;
 
         double angle = 0;
-        double turnAngle = 0;
 
         // Constants
         float kP = 0.01;

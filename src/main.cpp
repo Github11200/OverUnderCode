@@ -29,7 +29,7 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 // Global variables
-Odometry odometry("NAME OF STARTING POSITION");
+Odometry odometry(1);
 DriverAutonomous driverAutonomous;
 
 /*---------------------------------------------------------------------------*/

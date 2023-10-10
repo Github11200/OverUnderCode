@@ -1,14 +1,13 @@
 #include "vex.h"
 #include "math.h"
-#include "string"
 
 using namespace std;
 using namespace vex;
 
 #pragma once
-extern long double x = 0;
-extern long double y = 0;
-extern double theta = 0;
+long double x = 0;
+long double y = 0;
+double theta = 0;
 
 /**
  * @brief This class handles updating the position and orientation of the robot for the autonomous
@@ -88,7 +87,7 @@ public:
         y += this->yIncrement;
     }
 
-    Odometry(string fieldPosition)
+    Odometry(int startingPosition)
     {
         /*
             ADD IN A SWITCH STATEMENT TO SET THE X AND Y POSITION OF THE ROBOT IN THIS CLASS
