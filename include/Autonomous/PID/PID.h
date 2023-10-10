@@ -18,15 +18,21 @@ private:
     }
 
     /// @brief This method finds the minimum angle that the robot has to turn in order to face the target angle
-    /// @param angle This is the angle inside the triangle
     /// @param targetAngle This is the angle at which we want the robot to be at
+    /// @param currentHeading This is the angle at which the robot is currently at
     /// @return The minimum number of degrees the robot has to turn to reach the target angle
-    long double findMinAngle(double angle, double targetAngle)
+    double findMinAngle(double targetAngle, double currentHeading)
     {
-        double minAngle = angle - targetAngle;
+        double minAngle = targetAngle - currentHeading;
 
         if (minAngle > 180 || minAngle < -180)
             minAngle = -1 * this->sgn(minAngle) * (360 - fabs(minAngle));
+
+        return minAngle;
+    }
+
+    double radiansToDegrees(double radians)
+    {
     }
 
 public:
@@ -91,10 +97,10 @@ public:
                 =================================================================*/
 
                 /*****************************TURN ERROR*****************************/
-                angle = atan2(targetY - y, targetX - x);
+                angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
                 if (angle < 0)
                     angle += 360;
-                turnError = this->findMinAngle(angle, targetTheta);
+                turnError = this->findMinAngle(angle, theta);
 
                 /*****************************TURN INTEGRAL*****************************/
                 turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
@@ -123,5 +129,44 @@ public:
     /// @param targetTheta This is the angle at which you want the robot to turn to
     void Turn(double targetTheta)
     {
+        double turnPower = 0;
+
+        // PID components
+        double turnError = 3;
+        double previousTurnError = 0;
+
+        double turnIntegral = 0;
+
+        double turnDerivative = 0;
+
+        // Constants
+        float turnkP = 0.01;
+        float turnkI = 0.01;
+        float turnkD = 0.01;
+        int maxTurnErrorForTurnIntegral = 90;
+        int dT = 15;
+
+        while (turnError >= 3 || turnError <= -3)
+        {
+            /*****************************TURN ERROR*****************************/
+            turnError = this->findMinAngle(targetTheta, theta);
+
+            /*****************************TURN INTEGRAL*****************************/
+            turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+
+            /*****************************TURN DERIVATIVE*****************************/
+            turnDerivative = turnError - previousTurnError;
+
+            // Calculate the power for each of the motors
+            turnPower = (turnError * turnkP) + (turnIntegral * turnkI) + (turnDerivative * turnkD);
+
+            // Make the motors spin
+            Right.spin(vex::directionType::fwd, turnPower, vex::voltageUnits::volt);
+            Left.spin(vex::directionType::fwd, -turnPower, vex::voltageUnits::volt);
+
+            previousTurnError = turnError;
+
+            wait(dT, vex::timeUnits::msec);
+        }
     }
 };
