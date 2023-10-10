@@ -1,27 +1,27 @@
 {
-    "C_Cpp.default.systemIncludePath": [
-        "${config:vexrobotics.vexcode.Cpp.Sdk.Home}\\V5\\V5_20220726_10_00_00\\vexv5\\gcc\\include\\sys"
-    ],
-    "files.associations": {
-        "*.tcc": "cpp",
-        "cctype": "cpp",
-        "chrono": "cpp",
-        "clocale": "cpp",
-        "cmath": "cpp",
-        "cstdarg": "cpp",
-        "cstdint": "cpp",
-        "cstdio": "cpp",
-        "cstdlib": "cpp",
-        "ctime": "cpp",
-        "cwchar": "cpp",
-        "exception": "cpp",
-        "initializer_list": "cpp",
-        "iosfwd": "cpp",
-        "limits": "cpp",
-        "new": "cpp",
-        "ratio": "cpp",
-        "type_traits": "cpp",
-        "typeinfo": "cpp",
-        "string": "cpp"
-    }
+	"C_Cpp.default.systemIncludePath": [
+		"${config:vexrobotics.vexcode.Cpp.Sdk.Home}\\V5\\V5_20220726_10_00_00\\vexv5\\gcc\\include\\sys"
+	],
+	"files.associations": {
+		"*.tcc": "cpp",
+		"cctype": "cpp",
+		"chrono": "cpp",
+		"clocale": "cpp",
+		"cmath": "cpp",
+		"cstdarg": "cpp",
+		"cstdint": "cpp",
+		"cstdio": "cpp",
+		"cstdlib": "cpp",
+		"ctime": "cpp",
+		"cwchar": "cpp",
+		"exception": "cpp",
+		"initializer_list": "cpp",
+		"iosfwd": "cpp",
+		"limits": "cpp",
+		"new": "cpp",
+		"ratio": "cpp",
+		"type_traits": "cpp",
+		"typeinfo": "cpp",
+		"string": "cpp"
+	}
 }

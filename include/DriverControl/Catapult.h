@@ -13,7 +13,7 @@ int CatapultButtons()
         if (Controller.ButtonL1.pressing())
         {
             // If the catapult is down then spin the motor in reverse for 1 second to shoot it
-            if (!isCatapultDown)
+            if (isCatapultDown)
             {
                 Catapult.spinFor(vex::directionType::rev, 1, vex::timeUnits::sec);
                 isCatapultDown = false;
