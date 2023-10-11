@@ -54,7 +54,7 @@ private:
             return false;
     }
 
-    /// @brief This function finds the distance between two points by finding the hypotenuse of a triangle
+    /// @brief This method finds the distance between two points by finding the hypotenuse of a triangle
     /// @param x1 The x coordinate of the first point
     /// @param y1 The y coordinate of the first point
     /// @param x2 The x coordinate of the second point
@@ -66,6 +66,8 @@ private:
     }
 
 public:
+    /// @brief This method finds out what the best goal point is for the robot to follow
+    /// @return A point which has the x and y coordinates, speed, and the look ahead distance
     Point chooseGoalPoint()
     {
         // Create the goal point which is what will be returned
