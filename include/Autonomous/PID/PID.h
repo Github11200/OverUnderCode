@@ -37,7 +37,8 @@ public:
     /// @param targetY The y position that you want the robot to move to on the field
     /// @param targetTheta The angle at which you want the robot to be at once it is done moving
     /// @param isRelativeToZero Whether the x and y values are based off of the assumption that the robot is always starting at point (0, 0)
-    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false)
+    /// @param desiredValue This parameter is used as the target position if the starting point of the PID is from 0
+    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000)
     {
         // The total power for turning and moving forward
         double power = 0;
@@ -69,54 +70,66 @@ public:
         int maxTurnErrorForTurnIntegral = 90;
         int dT = 15;
 
-        if (!isRelativeToZero)
+        double averagePosition = 0;
+
+        // If the robot's starting position is going to be from 0 every time (if we don't have time
+        // to implement odometry) then set the position to 0 always
+        if (isRelativeToZero)
         {
-            while (error >= 3 || (error < 0 && error >= -3))
-            {
-                /*=================================================================
-                                    Moving towards target point
-                =================================================================*/
+            Left.setPosition(0, vex::rotationUnits::deg);
+            Right.setPosition(0, vex::rotationUnits::deg);
+        }
 
-                /*****************************ERROR*****************************/
-                error = sqrt(fabs(pow(targetX - x, 2)) + fabs(pow(targetY - y, 2)));
+        while (error >= 3 || (error < 0 && error >= -3))
+        {
+            // If the robot is starting relative to 0 then the average position will the the average
+            // between the motors on the left side and the motors on the right side
+            if (isRelativeToZero)
+                averagePosition = (((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2) + ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2)) / 2;
 
-                /*****************************INTEGRAL*****************************/
-                // If the robot has overshot the target or the error is really big then integral should be 0
-                error < 0 || error >= maxErrorForIntegral ? integral = 0 : integral += error;
+            /*=================================================================
+                                Moving towards target point
+            =================================================================*/
 
-                /*****************************DERIVATIVE*****************************/
-                derivative = error - previousError;
+            /*****************************ERROR*****************************/
+            error = isRelativeToZero ? desiredValue - averagePosition : (fabs(pow(targetX - x, 2)) + fabs(pow(targetY - y, 2)));
 
-                /*=================================================================
-                                    Turning towards target point
-                =================================================================*/
+            /*****************************INTEGRAL*****************************/
+            // If the robot has overshot the target or the error is really big then integral should be 0
+            error < 0 || error >= maxErrorForIntegral ? integral = 0 : integral += error;
 
-                /*****************************TURN ERROR*****************************/
-                angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
-                if (angle < 0)
-                    angle += 360;
-                turnError = this->findMinAngle(angle, theta);
+            /*****************************DERIVATIVE*****************************/
+            derivative = error - previousError;
 
-                /*****************************TURN INTEGRAL*****************************/
-                turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+            /*=================================================================
+                                Turning towards target point
+            =================================================================*/
 
-                /*****************************TURN DERIVATIVE*****************************/
-                turnDerivative = turnError - previousTurnError;
+            /*****************************TURN ERROR*****************************/
+            angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
+            if (angle < 0)
+                angle += 360;
+            turnError = this->findMinAngle(angle, Inertial.yaw(vex::rotationUnits::deg));
 
-                // Calculate the powers for going straight and turning
-                power = (error * kP) + (integral * kI) + (derivative * kD);
-                turnPower = (turnError * turnkP) + (turnIntegral * turnkI) + (turnDerivative * turnkD);
+            /*****************************TURN INTEGRAL*****************************/
+            turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
 
-                // Spin the motors based on the values
-                Right.spin(vex::directionType::fwd, power + turnPower, vex::voltageUnits::volt);
-                Left.spin(vex::directionType::fwd, power - turnPower, vex::voltageUnits::volt);
+            /*****************************TURN DERIVATIVE*****************************/
+            turnDerivative = turnError - previousTurnError;
 
-                // Update the previous errors
-                previousError = error;
-                previousTurnError = turnError;
+            // Calculate the powers for going straight and turning
+            power = (error * kP) + (integral * kI) + (derivative * kD);
+            turnPower = (turnError * turnkP) + (turnIntegral * turnkI) + (turnDerivative * turnkD);
 
-                wait(dT, vex::timeUnits::msec);
-            }
+            // Spin the motors based on the values
+            Left.spin(vex::directionType::fwd, power - turnPower, vex::voltageUnits::volt);
+            Right.spin(vex::directionType::fwd, power + turnPower, vex::voltageUnits::volt);
+
+            // Update the previous errors
+            previousError = error;
+            previousTurnError = turnError;
+
+            wait(dT, vex::timeUnits::msec);
         }
     }
 
@@ -144,7 +157,7 @@ public:
         while (turnError >= 3 || turnError <= -3)
         {
             /*****************************TURN ERROR*****************************/
-            turnError = this->findMinAngle(targetTheta, theta);
+            turnError = this->findMinAngle(targetTheta, Inertial.yaw(vex::rotationUnits::deg));
 
             /*****************************TURN INTEGRAL*****************************/
             turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
