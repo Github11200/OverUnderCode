@@ -112,10 +112,10 @@ public:
                 double endY = this->Points[this->pointsLength - 1].y;
 
                 if (this->isInRange(x, endX, 1) && this->isInRange(y, endY, 1))
-                    return;
+                    return goalPt;
 
                 if (sqrt(pow(endX - x, 2) + pow(endY - y, 2)) <= pointTwo.lookAheadDistance - (pointTwo.lookAheadDistance - 2))
-                    return;
+                    return goalPt;
 
                 if (sqrt(pow(endX - x, 2) + pow(endY - y, 2)) <= pointTwo.lookAheadDistance)
                 {

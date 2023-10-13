@@ -29,8 +29,8 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 // Global variables
-Odometry odometry(1);
-DriverAutonomous driverAutonomous;
+// Odometry odometry(1);
+// DriverAutonomous driverAutonomous;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -66,16 +66,16 @@ void pre_auton(void)
 
 /// @brief This function calls the method in the odometry class to update the robot position and orientation
 /// @return 0
-int callOdometryMethod()
-{
-    while (true)
-    {
-        odometry.UpdatePosition();
-        vex::task::sleep(10);
-    }
+// int callOdometryMethod()
+// {
+//     while (true)
+//     {
+//         odometry.UpdatePosition();
+//         vex::task::sleep(10);
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 void autonomous(void)
 {
@@ -83,13 +83,13 @@ void autonomous(void)
     // Insert autonomous user code here.
     // ..........................................................................
 
-    // Start getting data about the position and orientation
-    task odom = task(callOdometryMethod);
+    // // Start getting data about the position and orientation
+    // task odom = task(callOdometryMethod);
 
-    // Destruct the odometry class to free up resources
-    odometry.~Odometry();
+    // // Destruct the odometry class to free up resources
+    // odometry.~Odometry();
 
-    driverAutonomous.execute();
+    // driverAutonomous.execute();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -120,23 +120,23 @@ int Buttons()
 
 /// @brief This function calls the record method to record buttons and joystick controls
 /// @return 0
-int RecordDriver()
-{
-    while (true)
-    {
-        driverAutonomous.record();
-        vex::task::sleep(10);
-    }
+// int RecordDriver()
+// {
+//     while (true)
+//     {
+//         driverAutonomous.record();
+//         vex::task::sleep(10);
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 void usercontrol(void)
 {
     // Initialize tasks
     task joysticks = task(JoystickControl);
     task buttons = task(Buttons);
-    task recordDriver = task(RecordDriver);
+    // task recordDriver = task(RecordDriver);
 
     // User control code here, inside the loop
     while (1)
@@ -151,8 +151,8 @@ void usercontrol(void)
         // ........................................................................
 
         // Once the driver presses the A button that is when you start recording the buttons and joysticks from the driver
-        if (Controller.ButtonA.pressing())
-            recordDriver = task(RecordDriver);
+        // if (Controller.ButtonA.pressing())
+        //     recordDriver = task(RecordDriver);
 
         wait(20, msec); // Sleep the task for a short amount of time to
                         // prevent wasted resources.
