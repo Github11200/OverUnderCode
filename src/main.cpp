@@ -46,12 +46,7 @@ void pre_auton(void)
 {
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
-    CatapultRotationSensor.resetPosition();
-
-    // Set the brain screen to red while calibrating the intertial sensor
-    Brain.Screen.setFillColor(vex::color::red);
-    Brain.Screen.drawRectangle(0, 0, 479, 239);
-    Inertial.calibrate();
+    CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -133,6 +128,8 @@ int Buttons()
 
 void usercontrol(void)
 {
+    CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
+
     // Initialize tasks
     task joysticks = task(JoystickControl);
     task buttons = task(Buttons);

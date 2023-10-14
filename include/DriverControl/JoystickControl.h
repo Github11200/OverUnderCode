@@ -15,7 +15,7 @@ int JoystickControl()
     while (true)
     {
         // Update the power and turn again
-        power = Controller.Axis1.position();
+        power = -Controller.Axis1.position();
         turn = Controller.Axis3.position();
 
         // If the power is within the deadzone then calculate it
