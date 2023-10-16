@@ -37,9 +37,8 @@ public:
         cout << Controller.ButtonR1.pressing() << ",";
         cout << Controller.ButtonR2.pressing() << ",";
 
-        // Check if the X and/or B buttons (for wings) are being pressed
+        // Check if the X button (for wings) if being pressed
         cout << Controller.ButtonX.pressing() << ",";
-        cout << Controller.ButtonB.pressing() << ",";
     }
 
     void execute()
@@ -48,8 +47,7 @@ public:
         int commandNumber = 1;
 
         bool isCatapultRapidFireOn = false;
-        bool rightWingValue = false;
-        bool leftWingValue = true;
+        bool wingsExtended = false;
         double power = 0;
         double turn = 0;
 
@@ -126,23 +124,20 @@ public:
             // it stopped at coast
             case 7:
                 commands[i] ? Intake.spin(vex::directionType::rev, 100, vex::percentUnits::pct) : Intake.stop(vex::brakeType::coast);
+                break;
 
-            // If the X button was pressed then either extend or retract the right wing based on what it's state right now
+            // If the X button was pressed then either extend or retract the wings based on their current state
             case 8:
                 if (commands[i])
-                    RightWing.set(!rightWingValue);
-
-            // If the X button was pressed then either extend or retract the left wing based on what it's state right now
-            case 9:
-                if (commands[i])
-                    LeftWing.set(!leftWingValue);
+                    wings.set(!wingsExtended);
+                break;
 
             default:
                 break;
             }
 
-            // If the command number is 9 then bring it back to one otherwise just increment it
-            commandNumber == 9 ? commandNumber = 1 : ++commandNumber;
+            // If the command number is 8 then bring it back to one otherwise just increment it
+            commandNumber == 8 ? commandNumber = 1 : ++commandNumber;
         }
     }
 };

@@ -28,9 +28,8 @@ rotation CatapultRotationSensor = rotation(PORT11, false); // Done
 inertial Inertial = inertial(PORT3);                       // Done
 
 // Pistons
-digital_out IntakePiston = digital_out(Brain.ThreeWirePort.A);
-digital_out LeftWing = digital_out(Brain.ThreeWirePort.B);
-digital_out RightWing = digital_out(Brain.ThreeWirePort.C);
+digital_out wings = digital_out(Brain.ThreeWirePort.A);
+digital_out IntakePiston = digital_out(Brain.ThreeWirePort.B);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

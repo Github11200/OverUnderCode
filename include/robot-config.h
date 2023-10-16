@@ -24,8 +24,7 @@ extern inertial Inertial;
 
 // Pistons
 extern digital_out IntakePiston;
-extern digital_out LeftWing;
-extern digital_out RightWing;
+extern digital_out wings;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
