@@ -77,14 +77,6 @@ void autonomous(void)
     // ..........................................................................
     // Insert autonomous user code here.
     // ..........................................................................
-
-    // // Start getting data about the position and orientation
-    // task odom = task(callOdometryMethod);
-
-    // // Destruct the odometry class to free up resources
-    // odometry.~Odometry();
-
-    // driverAutonomous.execute();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -133,7 +125,6 @@ void usercontrol(void)
     // Initialize tasks
     task joysticks = task(JoystickControl);
     task buttons = task(Buttons);
-    // task recordDriver = task(RecordDriver);
 
     // User control code here, inside the loop
     while (1)
@@ -146,10 +137,6 @@ void usercontrol(void)
         // Insert user code here. This is where you use the joystick values to
         // update your motors, etc.
         // ........................................................................
-
-        // Once the driver presses the A button that is when you start recording the buttons and joysticks from the driver
-        // if (Controller.ButtonA.pressing())
-        //     recordDriver = task(RecordDriver);
 
         wait(20, msec); // Sleep the task for a short amount of time to
                         // prevent wasted resources.

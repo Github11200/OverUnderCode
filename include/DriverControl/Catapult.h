@@ -12,7 +12,7 @@ void CatapultButtons()
         // If the catapult is down then spin the motor in reverse for 1 second to shoot it
         if (isCatapultDown)
         {
-            Catapult.spinFor(vex::directionType::rev, 1, vex::timeUnits::sec);
+            Catapult.spinFor(vex::directionType::fwd, 1, vex::timeUnits::sec);
             isCatapultDown = false;
         }
     }
@@ -22,12 +22,12 @@ void CatapultButtons()
 
         // While the user doesn't press the l2 button again, continue spinning the catapult
         while (!Controller.ButtonL2.pressing())
-            Catapult.spin(vex::directionType::rev, 100, vex::percentUnits::pct);
+            Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
     }
 
     // Bring the catapult back into the down position
     while (CatapultRotationSensor.position(vex::rotationUnits::deg) < 94.5)
-        Catapult.spin(vex::directionType::rev, 100, vex::percentUnits::pct);
+        Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 
     Catapult.stop(vex::brakeType::hold);
     isCatapultDown = true;

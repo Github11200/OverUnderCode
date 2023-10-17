@@ -33,11 +33,11 @@ private:
 
 public:
     /// @brief This method will move the robot to a position on the field
-    /// @param targetX The x position that you want the robot to move to on the field
-    /// @param targetY The y position that you want the robot to move to on the field
-    /// @param targetTheta The angle at which you want the robot to be at once it is done moving
+    /// @param targetX The x position that you want the robot to move to on the field in inches
+    /// @param targetY The y position that you want the robot to move to on the field in inches
+    /// @param targetTheta The angle at which you want the robot to be at once it is done moving in degrees
     /// @param isRelativeToZero Whether the x and y values are based off of the assumption that the robot is always starting at point (0, 0)
-    /// @param desiredValue This parameter is used as the target position if the starting point of the PID is from 0
+    /// @param desiredValue This parameter is used as the target position if the starting point of the PID is from 0 in inches
     void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000)
     {
         // The total power for turning and moving forward
@@ -59,9 +59,10 @@ public:
         double angle = 0;
 
         // Constants
-        float kP = 0.01;
+        float kP = 0.1;
         float kI = 0.01;
         float kD = 0.01;
+        float wheelDiameter = 4.2;
 
         float turnkP = 0.01;
         float turnkI = 0.01;
@@ -85,7 +86,10 @@ public:
             // If the robot is starting relative to 0 then the average position will the the average
             // between the motors on the left side and the motors on the right side
             if (isRelativeToZero)
+            {
                 averagePosition = (((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2) + ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2)) / 2;
+                averagePosition *= wheelDiameter * M_PI; // Multiply the position of the motor encoders by the circumference of the wheel to get the distance traveled in inches
+            }
 
             /*=================================================================
                                 Moving towards target point
@@ -94,12 +98,12 @@ public:
             /*****************************ERROR*****************************/
             error = isRelativeToZero ? desiredValue - averagePosition : (fabs(pow(targetX - x, 2)) + fabs(pow(targetY - y, 2)));
 
-            /*****************************INTEGRAL*****************************/
-            // If the robot has overshot the target or the error is really big then integral should be 0
-            error < 0 || error >= maxErrorForIntegral ? integral = 0 : integral += error;
+            // /*****************************INTEGRAL*****************************/
+            // // If the robot has overshot the target or the error is really big then integral should be 0
+            // error < 0 || error >= maxErrorForIntegral ? integral = 0 : integral += error;
 
-            /*****************************DERIVATIVE*****************************/
-            derivative = error - previousError;
+            // /*****************************DERIVATIVE*****************************/
+            // derivative = error - previousError;
 
             /*=================================================================
                                 Turning towards target point
@@ -111,15 +115,15 @@ public:
                 angle += 360;
             turnError = this->findMinAngle(angle, Inertial.yaw(vex::rotationUnits::deg));
 
-            /*****************************TURN INTEGRAL*****************************/
-            turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+            // /*****************************TURN INTEGRAL*****************************/
+            // turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
 
-            /*****************************TURN DERIVATIVE*****************************/
-            turnDerivative = turnError - previousTurnError;
+            // /*****************************TURN DERIVATIVE*****************************/
+            // turnDerivative = turnError - previousTurnError;
 
             // Calculate the powers for going straight and turning
-            power = (error * kP) + (integral * kI) + (derivative * kD);
-            turnPower = (turnError * turnkP) + (turnIntegral * turnkI) + (turnDerivative * turnkD);
+            power = (error * kP) /* + (integral * kI) + (derivative * kD)*/;
+            turnPower = (turnError * turnkP) /*+ (turnIntegral * turnkI) + (turnDerivative * turnkD)*/;
 
             // Spin the motors based on the values
             Left.spin(vex::directionType::fwd, power - turnPower, vex::voltageUnits::volt);
@@ -134,7 +138,7 @@ public:
     }
 
     /// @brief This method will turn the robot to a certain angle relative to the field
-    /// @param targetTheta This is the angle at which you want the robot to turn to
+    /// @param targetTheta This is the angle at which you want the robot to turn to in degrees
     void Turn(double targetTheta)
     {
         double turnPower = 0;
