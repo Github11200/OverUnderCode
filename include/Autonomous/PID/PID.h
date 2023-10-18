@@ -6,6 +6,8 @@ using namespace vex;
 class PID
 {
 private:
+    double degreesWheelGearRotatesMultiplier = 0.42833333333333333333333333333333;
+
     /// @brief This function returns 1 or -1 based on whether the input number is positive or negative
     /// @param num The number who's sign you want to figure out
     /// @return 1 or -1 based on whether the input number is positive or negative
@@ -59,19 +61,22 @@ public:
         double angle = 0;
 
         // Constants
-        float kP = 0.1;
+        float kP = 0.3;
         float kI = 0.01;
         float kD = 0.01;
-        float wheelDiameter = 4.2;
+        float wheelDiameter = 4;
 
-        float turnkP = 0.01;
-        float turnkI = 0.01;
-        float turnkD = 0.01;
+        float turnkP = 0.09;
+        float turnkI = 0.08;
+        float turnkD = 0.1;
         int maxErrorForIntegral = 100;
         int maxTurnErrorForTurnIntegral = 90;
         int dT = 15;
 
+        double leftPositionAverage = 0;
+        double rightPositionAverage = 0;
         double averagePosition = 0;
+        double inchesTraveled = 0;
 
         // If the robot's starting position is going to be from 0 every time (if we don't have time
         // to implement odometry) then set the position to 0 always
@@ -81,14 +86,17 @@ public:
             Right.setPosition(0, vex::rotationUnits::deg);
         }
 
-        while (error >= 3 || (error < 0 && error >= -3))
+        while ((fabs(error) >= 0 || (fabs(error) < 0 && fabs(error) >= -3)) || (fabs(turnError) >= 0 || (fabs(turnError) < 0 && fabs(turnError) >= -3)))
         {
             // If the robot is starting relative to 0 then the average position will the the average
             // between the motors on the left side and the motors on the right side
             if (isRelativeToZero)
             {
-                averagePosition = (((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2) + ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2)) / 2;
-                averagePosition *= wheelDiameter * M_PI; // Multiply the position of the motor encoders by the circumference of the wheel to get the distance traveled in inches
+                leftPositionAverage = -((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2);
+                rightPositionAverage = ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2);
+                averagePosition = (leftPositionAverage + rightPositionAverage) / 2;
+                inchesTraveled = ((averagePosition * this->degreesWheelGearRotatesMultiplier) * wheelDiameter * M_PI) / 360;
+                inchesTraveled = ((averagePosition / 840) * wheelDiameter * M_PI); // TEST
             }
 
             /*=================================================================
@@ -96,38 +104,28 @@ public:
             =================================================================*/
 
             /*****************************ERROR*****************************/
-            error = isRelativeToZero ? desiredValue - averagePosition : (fabs(pow(targetX - x, 2)) + fabs(pow(targetY - y, 2)));
-
-            // /*****************************INTEGRAL*****************************/
-            // // If the robot has overshot the target or the error is really big then integral should be 0
-            // error < 0 || error >= maxErrorForIntegral ? integral = 0 : integral += error;
-
-            // /*****************************DERIVATIVE*****************************/
-            // derivative = error - previousError;
+            error = (desiredValue - inchesTraveled);
 
             /*=================================================================
                                 Turning towards target point
             =================================================================*/
 
             /*****************************TURN ERROR*****************************/
-            angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
-            if (angle < 0)
-                angle += 360;
-            turnError = this->findMinAngle(angle, Inertial.yaw(vex::rotationUnits::deg));
-
-            // /*****************************TURN INTEGRAL*****************************/
-            // turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+            // angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
+            // if (angle < 0)
+            //     angle += 360;
+            turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
 
             // /*****************************TURN DERIVATIVE*****************************/
-            // turnDerivative = turnError - previousTurnError;
+            turnDerivative = turnError - previousTurnError;
 
             // Calculate the powers for going straight and turning
-            power = (error * kP) /* + (integral * kI) + (derivative * kD)*/;
-            turnPower = (turnError * turnkP) /*+ (turnIntegral * turnkI) + (turnDerivative * turnkD)*/;
+            power = (error * kP);
+            turnPower = ((turnError * turnkP) + (turnDerivative * turnkD));
 
             // Spin the motors based on the values
-            Left.spin(vex::directionType::fwd, power - turnPower, vex::voltageUnits::volt);
-            Right.spin(vex::directionType::fwd, power + turnPower, vex::voltageUnits::volt);
+            Left.spin(vex::directionType::rev, power + turnPower, vex::voltageUnits::volt);
+            Right.spin(vex::directionType::fwd, power - turnPower, vex::voltageUnits::volt);
 
             // Update the previous errors
             previousError = error;
@@ -152,28 +150,31 @@ public:
         double turnDerivative = 0;
 
         // Constants
-        float turnkP = 0.01;
+        float turnkP = 0.2;
         float turnkI = 0.01;
         float turnkD = 0.01;
         int maxTurnErrorForTurnIntegral = 90;
         int dT = 15;
 
-        while (turnError >= 3 || turnError <= -3)
+        while (turnError >= 1 || turnError <= -1)
         {
             /*****************************TURN ERROR*****************************/
-            turnError = this->findMinAngle(targetTheta, Inertial.yaw(vex::rotationUnits::deg));
+            turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
 
             /*****************************TURN INTEGRAL*****************************/
-            turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+            // turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
 
             /*****************************TURN DERIVATIVE*****************************/
-            turnDerivative = turnError - previousTurnError;
+            // turnDerivative = turnError - previousTurnError;
 
             // Calculate the power for each of the motors
-            turnPower = (turnError * turnkP) + (turnIntegral * turnkI) + (turnDerivative * turnkD);
+            turnPower = (turnError * turnkP) /*+ (turnIntegral * turnkI) + (turnDerivative * turnkD)*/;
+
+            cout << "Turn error: " << turnError << endl;
+            cout << "Turn power: " << turnPower << endl;
 
             // Make the motors spin
-            Right.spin(vex::directionType::fwd, turnPower, vex::voltageUnits::volt);
+            Right.spin(vex::directionType::rev, turnPower, vex::voltageUnits::volt);
             Left.spin(vex::directionType::fwd, -turnPower, vex::voltageUnits::volt);
 
             previousTurnError = turnError;

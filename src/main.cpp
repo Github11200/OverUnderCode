@@ -29,8 +29,7 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 // Global variables
-// Odometry odometry(1);
-// DriverAutonomous driverAutonomous;
+PID pid;
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -46,7 +45,16 @@ void pre_auton(void)
 {
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
+
+    // Calibrate all of the sensors
     CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
+    Inertial.calibrate();
+    wait(4, vex::timeUnits::sec);
+
+    // Let the user know that the inertial is calibrated by rumbling the controller and filling the brain with a green rectangle
+    Controller.rumble(rumbleShort);
+    Brain.Screen.setFillColor(vex::color::green);
+    Brain.Screen.drawRectangle(1, 1, 48, 12);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -97,7 +105,6 @@ int Buttons()
     {
         IntakeControl();
         CatapultButtons();
-        Wings();
 
         vex::task::sleep(15);
     }
@@ -125,6 +132,7 @@ void usercontrol(void)
     // Initialize tasks
     task joysticks = task(JoystickControl);
     task buttons = task(Buttons);
+    task wings = task(Wings);
 
     // User control code here, inside the loop
     while (1)
@@ -134,9 +142,9 @@ void usercontrol(void)
         // values based on feedback from the joysticks.
 
         // ........................................................................
-        // Insert user code here. This is where you use the joystick values to
+        // Insert user code here. This is  where you use the joystick values to
         // update your motors, etc.
-        // ........................................................................
+        // ............ ............................................................
 
         wait(20, msec); // Sleep the task for a short amount of time to
                         // prevent wasted resources.
