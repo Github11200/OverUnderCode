@@ -86,7 +86,7 @@ public:
             Right.setPosition(0, vex::rotationUnits::deg);
         }
 
-        while ((fabs(error) >= 0 || (fabs(error) < 0 && fabs(error) >= -3)) || (fabs(turnError) >= 0 || (fabs(turnError) < 0 && fabs(turnError) >= -3)))
+        while (fabs(error) >= 0.8 && fabs(turnError) >= 1.2)
         {
             // If the robot is starting relative to 0 then the average position will the the average
             // between the motors on the left side and the motors on the right side
@@ -95,8 +95,8 @@ public:
                 leftPositionAverage = -((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2);
                 rightPositionAverage = ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2);
                 averagePosition = (leftPositionAverage + rightPositionAverage) / 2;
-                inchesTraveled = ((averagePosition * this->degreesWheelGearRotatesMultiplier) * wheelDiameter * M_PI) / 360;
-                inchesTraveled = ((averagePosition / 840) * wheelDiameter * M_PI); // TEST
+                // inchesTraveled = ((averagePosition * this->degreesWheelGearRotatesMultiplier) * wheelDiameter * M_PI) / 360;
+                inchesTraveled = ((averagePosition / 840) * wheelDiameter * M_PI);
             }
 
             /*=================================================================
@@ -153,25 +153,26 @@ public:
         float turnkP = 0.2;
         float turnkI = 0.01;
         float turnkD = 0.01;
-        int maxTurnErrorForTurnIntegral = 90;
+        int maxTurnErrorForTurnIntegral = 60;
         int dT = 15;
 
-        while (turnError >= 1 || turnError <= -1)
+        while (fabs(turnError) >= 1.9)
         {
             /*****************************TURN ERROR*****************************/
             turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
 
             /*****************************TURN INTEGRAL*****************************/
-            // turnError < 0 || turnError >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+            fabs(turnError) < 0 || fabs(turnError) >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
 
             /*****************************TURN DERIVATIVE*****************************/
             // turnDerivative = turnError - previousTurnError;
 
             // Calculate the power for each of the motors
-            turnPower = (turnError * turnkP) /*+ (turnIntegral * turnkI) + (turnDerivative * turnkD)*/;
+            turnPower = (turnError * turnkP) + (turnIntegral * turnkI) /*+ (turnDerivative * turnkD)*/;
 
             cout << "Turn error: " << turnError << endl;
             cout << "Turn power: " << turnPower << endl;
+            cout << "Inertial heading: " << Inertial.heading(deg) << endl;
 
             // Make the motors spin
             Right.spin(vex::directionType::rev, turnPower, vex::voltageUnits::volt);
