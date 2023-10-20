@@ -46,13 +46,15 @@ void pre_auton(void)
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
 
+    CatapultButtons(); // Bring the catapult down
+
     // Calibrate all of the sensors
     CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
-    Inertial.calibrate();
-    wait(4, vex::timeUnits::sec);
+    // Inertial.calibrate();
+    // wait(4, vex::timeUnits::sec);
 
     // Let the user know that the inertial is calibrated by rumbling the controller and filling the brain with a green rectangle
-    Controller.rumble(rumbleShort);
+    // Controller.rumble(rumbleShort);
     Brain.Screen.setFillColor(vex::color::green);
     Brain.Screen.drawRectangle(1, 1, 48, 12);
 }
@@ -85,6 +87,11 @@ void autonomous(void)
     // ..........................................................................
     // Insert autonomous user code here.
     // ..........................................................................
+    // pid.drive_straight(2, 50);
+    // pid.Turn(315);
+    // pid.MoveToPoint(0, 0, 0, true, 15.963379363045494);
+    // pid.Turn(40);
+    // pid.drive_straight(-4, 40);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -130,13 +137,53 @@ void usercontrol(void)
     CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
 
     // Initialize tasks
-    task joysticks = task(JoystickControl);
-    task buttons = task(Buttons);
-    task wings = task(Wings);
+    // task joysticks = task(JoystickControl);
+    // task buttons = task(Buttons);
+    // task wings = task(Wings);
+
+    Inertial.calibrate();
+    wait(4.35, vex::timeUnits::sec);
+
+    // Move the robot to the pipe for rapid firing
+    pid.Turn(320, 0.22);
+    cout << "DONE TURN////////////////////////////////" << endl;
+    pid.MoveToPoint(0, 0, 320, true, 16);
+    pid.Turn(257);
+    pid.drive_straight(15.7, 50);
+
+    wait(1, vex::timeUnits::sec);
+
+    // Curve the robot around to face the post, and get ready to go through it
+    pid.drive_straight(-4, 100);
+    wait(0.1, vex::timeUnits::sec);
+    pid.MoveToPoint(0, 0, 93.2, true, 20);
+    wait(0.1, vex::timeUnits::sec);
+    cout << "DONE CURVE////////////////////////////////" << endl;
+
+    // Move the robot over to the other side
+    pid.MoveToPoint(0, 0, 90, true, 35.5);
+    pid.MoveToPoint(0, 0, 96, true, 37, 0.28);
+
+    cout << "ONTO THE OTHER SIDE//////////////////////" << endl;
+
+    // Turn and push the tri balls into the side of the goal
+    pid.MoveToPoint(0, 0, 21, true, 21, 0.21, 1.39, 5.7);
+    cout << "IN FRONT OF GOAL//////////////////////////////////////" << endl;
+    pid.Turn(13, 0.5, 2.3);
+    cout << "DONE TURN/////////////////////////////////////////////////" << endl;
+    pid.drive_straight(30, 90);
+    pid.MoveToPoint(0, 0, 13, true, -20, 0.211, 3.21, 2.3);
+    cout << "DONE PUSHING IN TRI BALLS/////////////////////////////////////////" << endl;
+
+    pid.Turn(326, 0.22);
+    pid.MoveToPoint(0, 0, 326, true, 59.5, 0.211, 0.8, 2.3);
+    pid.Turn(85);
+    pid.MoveToPoint(0, 0, 85, true, 24);
 
     // User control code here, inside the loop
     while (1)
     {
+        // cout << "inertial heading: " << Inertial.heading(deg) << endl;
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.

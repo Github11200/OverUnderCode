@@ -6,8 +6,6 @@ using namespace vex;
 class PID
 {
 private:
-    double degreesWheelGearRotatesMultiplier = 0.42833333333333333333333333333333;
-
     /// @brief This function returns 1 or -1 based on whether the input number is positive or negative
     /// @param num The number who's sign you want to figure out
     /// @return 1 or -1 based on whether the input number is positive or negative
@@ -33,6 +31,18 @@ private:
         return minAngle;
     }
 
+    /// @brief  This method converts an input of inches to how many degrees the motors have to turn
+    /// @param inches is how many inches you want the motor to move
+    /// @return A float that tells you how many degrees the motors have to rotate
+    float Inches_To_Degrees(float inches)
+    {
+        float Wheel_Circumfrance = 2 * M_PI * 2;
+
+        float degrees = (inches / Wheel_Circumfrance) * 360;
+
+        return degrees;
+    }
+
 public:
     /// @brief This method will move the robot to a position on the field
     /// @param targetX The x position that you want the robot to move to on the field in inches
@@ -40,7 +50,7 @@ public:
     /// @param targetTheta The angle at which you want the robot to be at once it is done moving in degrees
     /// @param isRelativeToZero Whether the x and y values are based off of the assumption that the robot is always starting at point (0, 0)
     /// @param desiredValue This parameter is used as the target position if the starting point of the PID is from 0 in inches
-    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000)
+    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000, double turnkPValue = 0.211, double errorLoopEndValue = 0.8, double turnErrorLoopEndValue = 2)
     {
         // The total power for turning and moving forward
         double power = 0;
@@ -61,14 +71,14 @@ public:
         double angle = 0;
 
         // Constants
-        float kP = 0.3;
+        float kP = 0.85;
         float kI = 0.01;
         float kD = 0.01;
         float wheelDiameter = 4;
 
-        float turnkP = 0.09;
+        float turnkP = turnkPValue;
         float turnkI = 0.08;
-        float turnkD = 0.1;
+        float turnkD = 0.05;
         int maxErrorForIntegral = 100;
         int maxTurnErrorForTurnIntegral = 90;
         int dT = 15;
@@ -86,8 +96,13 @@ public:
             Right.setPosition(0, vex::rotationUnits::deg);
         }
 
-        while (fabs(error) >= 0.8 && fabs(turnError) >= 1.2)
+        while (fabs(error) >= errorLoopEndValue || fabs(turnError) >= turnErrorLoopEndValue)
         {
+            cout << "Error: " << error << endl;
+            cout << "Turn Error: " << turnError << endl;
+            cout << "Turn Power: " << turnPower << endl;
+            cout << "Power: " << power << endl;
+
             // If the robot is starting relative to 0 then the average position will the the average
             // between the motors on the left side and the motors on the right side
             if (isRelativeToZero)
@@ -95,7 +110,6 @@ public:
                 leftPositionAverage = -((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2);
                 rightPositionAverage = ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2);
                 averagePosition = (leftPositionAverage + rightPositionAverage) / 2;
-                // inchesTraveled = ((averagePosition * this->degreesWheelGearRotatesMultiplier) * wheelDiameter * M_PI) / 360;
                 inchesTraveled = ((averagePosition / 840) * wheelDiameter * M_PI);
             }
 
@@ -133,11 +147,13 @@ public:
 
             wait(dT, vex::timeUnits::msec);
         }
+
+        cout << "DONE MOVING TO POINT//////////////////////////////////////////////////////////" << endl;
     }
 
     /// @brief This method will turn the robot to a certain angle relative to the field
     /// @param targetTheta This is the angle at which you want the robot to turn to in degrees
-    void Turn(double targetTheta)
+    void Turn(double targetTheta, double turnkPValue = 0.2, double errorValue = 1.9)
     {
         double turnPower = 0;
 
@@ -150,13 +166,13 @@ public:
         double turnDerivative = 0;
 
         // Constants
-        float turnkP = 0.2;
+        float turnkP = turnkPValue;
         float turnkI = 0.01;
-        float turnkD = 0.01;
+        float turnkD = 0.02;
         int maxTurnErrorForTurnIntegral = 60;
         int dT = 15;
 
-        while (fabs(turnError) >= 1.9)
+        while (fabs(turnError) >= errorValue)
         {
             /*****************************TURN ERROR*****************************/
             turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
@@ -168,7 +184,7 @@ public:
             // turnDerivative = turnError - previousTurnError;
 
             // Calculate the power for each of the motors
-            turnPower = (turnError * turnkP) + (turnIntegral * turnkI) /*+ (turnDerivative * turnkD)*/;
+            turnPower = (turnError * turnkP) + (turnDerivative * turnkD);
 
             cout << "Turn error: " << turnError << endl;
             cout << "Turn power: " << turnPower << endl;
@@ -182,5 +198,21 @@ public:
 
             wait(dT, vex::timeUnits::msec);
         }
+
+        cout << "Done turning" << endl;
+    }
+
+    /// @brief This method gets the robot to just drive straight, but it doesn't use a PID so it goes quite fast and is used for shorter distances that don't require a lot of accuracy
+    /// @param drive_distance is how far you want the robot to drive
+    /// @param speed is the speed at which you want the robot to drive
+    /// @return Void
+    void drive_straight(float drive_distance, float speed)
+    {
+        // Get how many degrees the left side and right side motors have to turn
+        float drive_degrees = Inches_To_Degrees(drive_distance);
+
+        // Spin the motors
+        Left.spinFor(vex::directionType::fwd, -drive_degrees, vex::rotationUnits::deg, speed, vex::velocityUnits::pct, false);
+        Right.spinFor(vex::directionType::rev, -drive_degrees, vex::rotationUnits::deg, speed, vex::velocityUnits::pct);
     }
 };
