@@ -50,7 +50,7 @@ public:
     /// @param targetTheta The angle at which you want the robot to be at once it is done moving in degrees
     /// @param isRelativeToZero Whether the x and y values are based off of the assumption that the robot is always starting at point (0, 0)
     /// @param desiredValue This parameter is used as the target position if the starting point of the PID is from 0 in inches
-    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000, double turnkPValue = 0.211, double errorLoopEndValue = 0.8, double turnErrorLoopEndValue = 2)
+    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000, double turnkPValue = 0.211, double errorLoopEndValue = 0.8, double turnErrorLoopEndValue = 2, double kpValue = 0.85)
     {
         // The total power for turning and moving forward
         double power = 0;
@@ -71,7 +71,7 @@ public:
         double angle = 0;
 
         // Constants
-        float kP = 0.85;
+        float kP = kpValue;
         float kI = 0.01;
         float kD = 0.01;
         float wheelDiameter = 4;
@@ -158,7 +158,7 @@ public:
         double turnPower = 0;
 
         // PID components
-        double turnError = 3;
+        double turnError = 10;
         double previousTurnError = 0;
 
         double turnIntegral = 0;
