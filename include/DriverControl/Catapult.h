@@ -1,34 +1,26 @@
+#ifndef CATAPULT_H
+#define CATAPULT_H
+
 #include "vex.h"
 
-using namespace vex;
-
-/// @brief Rewinds and shoots the catapult based on where it is and the input from the controller
-void CatapultButtons()
+/// @brief This class handles all of the catapult functions
+class CatapultHandler
 {
+private:
     bool isCatapultDown = true;
-    // THE L1 BUTTON IS FOR SINGLE CATAPULT FIRE
-    if (Controller.ButtonL1.pressing())
-    {
-        // If the catapult is down then spin the motor in reverse for 1 second to shoot it
-        if (isCatapultDown)
-        {
-            Catapult.spinFor(vex::directionType::fwd, 1, vex::timeUnits::sec);
-            isCatapultDown = false;
-        }
-    }
-    else if (Controller.ButtonL2.pressing()) // THE L2 BUTTON IS FOR RAPID FIRE
-    {
-        wait(500, vex::timeUnits::msec);
 
-        // While the user doesn't press the l2 button again, continue spinning the catapult
-        while (!Controller.ButtonL2.pressing())
-            Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-    }
+public:
+    /// @brief This method will bring the catapult back down and get it ready to fire
+    void rewind();
 
-    // Bring the catapult back into the down position
-    while (CatapultRotationSensor.position(vex::rotationUnits::deg) < 94.5)
-        Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+    /// @brief This method handles the button presses, and will shoot and rewind the cata depending on what buttons are pressed
+    void buttons();
 
-    Catapult.stop(vex::brakeType::hold);
-    isCatapultDown = true;
-}
+    /// @brief This will fire the catapult once
+    void singleFire();
+
+    /// @brief This will continuously fire the catapult until the driver lets go of the L2 button
+    void rapidFire();
+};
+
+#endif

@@ -10,10 +10,10 @@
 #include "vex.h"
 
 // Include the autonomous files
-#include "../include/Autonomous/Odometry/Odometry.h"
-#include "../include/Autonomous/PID/PID.h"
-#include "../include/Autonomous/PurePursuit/PurePursuit.h"
-#include "../include/Autonomous/DriverAuto/DriverAutonomous.h"
+#include "../include/Autonomous/Odometry.h"
+#include "../include/Autonomous/PID.h"
+#include "../include/Autonomous/PurePursuit.h"
+#include "../include/Autonomous/DriverAutonomous.h"
 
 // Include the driver control files
 #include "../include/DriverControl/JoystickControl.h"
@@ -30,6 +30,8 @@ competition Competition;
 
 // Global variables
 PID pid;
+CatapultHandler catapultHandler;
+DriverAutonomous driverAutonomous(&catapultHandler);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -45,8 +47,6 @@ void pre_auton(void)
 {
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
-
-    CatapultButtons(); // Bring the catapult down
 
     // Calibrate all of the sensors
     CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
@@ -84,95 +84,80 @@ void autonomous(void)
     // ..........................................................................
     // Insert autonomous user code here.
     // ..........................................................................
+
     /*==============================================
                     SKILLS SLOT 2
     ==============================================*/
 
-    // Pop intake out
-    IntakePiston.set(true);
-    wait(1, vex::timeUnits::sec);
-    IntakePiston.set(false);
-    wait(0.8, vex::timeUnits::sec);
-    IntakePiston.set(true);
-    wait(1, vex::timeUnits::sec);
-    IntakePiston.set(false);
+    // // Pop intake out
+    // IntakePiston.set(true);
+    // wait(1, vex::timeUnits::sec);
+    // IntakePiston.set(false);
 
-    // Move the robot to the pipe for rapid firing
-    pid.Turn(320, 0.22);
-    pid.MoveToPoint(0, 0, 320, true, 16);
-    pid.Turn(257);
-    pid.drive_straight(16, 50);
+    // // Move the robot to the pipe for rapid firing
+    // pid.Turn(320, 0.22);
+    // pid.MoveToPoint(0, 0, 320, true, 16);
+    // pid.Turn(257);
+    // pid.drive_straight(19, 38);
 
-    // Rapid fire the tri balls
-    Catapult.setVelocity(100, vex::percentUnits::pct);
-    Catapult.spinFor(vex::directionType::fwd, 39, vex::timeUnits::sec);
+    // // Rapid fire the tri balls
+    // Catapult.setVelocity(100, vex::percentUnits::pct);
+    // Catapult.spinFor(vex::directionType::fwd, 39, vex::timeUnits::sec);
 
-    // Curve the robot around to face the post, and get ready to go through it
-    pid.drive_straight(-4, 100);
-    wait(0.1, vex::timeUnits::sec);
-    pid.MoveToPoint(0, 0, 95.4, true, 20, 0.211, 0.8, 2.4);
-    wait(0.1, vex::timeUnits::sec);
+    // // Curve the robot around to face the post, and get ready to go through it
+    // pid.drive_straight(-6, 100);
+    // wait(0.1, vex::timeUnits::sec);
+    // pid.MoveToPoint(0, 0, 95.4, true, 20, 0.23, 1, 4);
+    // wait(0.1, vex::timeUnits::sec);
 
-    // Move the robot over to the other side
-    pid.MoveToPoint(0, 0, 91, true, 35.5, 0.211, 0.8, 3);
-    pid.MoveToPoint(0, 0, 84, true, 37.5, 0.211, 0.8, 2.6);
+    // // Move the robot over to the other side
+    // pid.MoveToPoint(0, 0, 91, true, 35.5, 0.22, 2.6, 5.9, 0.89);
+    // pid.MoveToPoint(0, 0, 84, true, 37.5, 2, 3);
 
-    // PUSH TRI BALLS INTO RIGHT SIDE OF GOAL
-    Intake.spinFor(vex::directionType::rev, 1, vex::rotationUnits::rev, false);
-    pid.MoveToPoint(0, 0, 23, true, 21, 0.21, 1.39, 5.7);
-    pid.Turn(13, 0.5, 2.3);
-    pid.drive_straight(40, 90);
-    pid.drive_straight(-30, 90);
-    pid.drive_straight(30, 90);
-    pid.MoveToPoint(0, 0, 13, true, -16.5, 0.22, 3.21, 7);
+    // // PUSH TRI BALLS INTO RIGHT SIDE OF GOAL
+    // Intake.spinFor(vex::directionType::rev, 1, vex::rotationUnits::rev, false);
+    // pid.MoveToPoint(0, 0, 23, true, 21, 0.21, 2.39, 6.7);
+    // pid.Turn(13, 0.5, 4.3);
+    // pid.drive_straight(40, 90);
+    // pid.drive_straight(-30, 90);
+    // pid.drive_straight(30, 90);
+    // pid.MoveToPoint(0, 0, 13, true, -16.5, 0.22, 4.21, 7);
 
-    // PUSH TRI BALLS INTO MIDDLE PART OF GOAL
-    pid.Turn(317, 0.23);
-    pid.MoveToPoint(0, 0, 317, true, 47, 0.211, 0.8, 2.3);
-    wings.set(true);
-    pid.MoveToPoint(0, 0, 83.5, true, 30, 0.25, 3.4, 7, 0.95);
-    pid.drive_straight(20, 90);
-    pid.drive_straight(-20, 90);
-    pid.drive_straight(20, 90);
-    wings.set(false);
+    // // PUSH TRI BALLS INTO MIDDLE PART OF GOAL
+    // pid.Turn(317, 0.23, 3);
+    // pid.MoveToPoint(0, 0, 317, true, 47, 0.211, 8.5, 8.3);
+    // wings.set(true);
+    // pid.MoveToPoint(0, 0, 83.5, true, 30, 0.25, 8.4, 8, 0.95);
+    // pid.drive_straight(22, 90);
+    // pid.drive_straight(-22, 90);
+    // pid.drive_straight(20, 90);
+    // wings.set(false);
 
-    // Move the robot back and turn and move it to the next point
-    pid.MoveToPoint(0, 0, 83.5, true, -23, 0.22, 0.8, 2.7);
-    pid.Turn(30, 0.24);
-    pid.MoveToPoint(0, 0, 30, true, 39);
+    // // Move the robot back and turn and move it to the next point
+    // pid.MoveToPoint(0, 0, 83.5, true, -21, 0.22, 9, 10);
+    // pid.Turn(34, 0.24, 10);
+    // pid.MoveToPoint(0, 0, 30, true, 39, 0.23, 2, 5.7, 7.9);
 
-    // PUSH TRI BALLS INTO LEFT PART OF GOAL
-    Intake.spinFor(vex::directionType::rev, 1, vex::rotationUnits::rev, false);
-    pid.MoveToPoint(0, 0, 178, true, 48, 0.211, 0.8, 3.4);
-    pid.drive_straight(15, 90);
-    pid.drive_straight(-15, 90);
-    pid.drive_straight(15, 90);
+    // // PUSH TRI BALLS INTO LEFT PART OF GOAL
+    // Intake.spinFor(vex::directionType::rev, 1, vex::rotationUnits::rev, false);
+    // pid.MoveToPoint(0, 0, 178, true, 48, 0.211, 4.8, 6.4);
+    // pid.drive_straight(15, 90);
+    // pid.drive_straight(-15, 90);
+    // pid.drive_straight(15, 90);
 
     /*==============================================
-                    Match Auto SLOT 3
+                Match Auto SLOT 3
     ==============================================*/
 
-    // // PUSH THE TRI BALL INTO THE LEFT SIDE OF THE GOAL
-    // wings.set(true);
-    // pid.drive_straight(25, 25);
-    // pid.Turn(73, 0.25, 5.5);
-    // wings.set(false);
-    // pid.drive_straight(20, 35);
-    // pid.Turn(76, 0.35, 7);
-    // pid.drive_straight(17, 35);
-    // Intake.spinFor(vex::directionType::rev, 1, vex::timeUnits::sec);
-    // pid.drive_straight(14, 70);
-    // pid.drive_straight(-10, 40);
-    // pid.Turn(85, 0.5, 3);
-
-    // wings.set(true);
-
-    // // Move back and take the tri ball out of the corner
-    // pid.MoveToPoint(0, 0, 65, true, -30, 0.23, 2, 7);
-    // wings.set(false);
-    // pid.MoveToPoint(0, 0, 180, true, 27, 0.23, 2, 5);
-    // pid.drive_straight(15, 60);
-    // wings.set(true);
+    // PUSH THE TRI BALL INTO THE LEFT SIDE OF THE GOAL
+    pid.drive_straight(17, 25);
+    pid.MoveToPoint(0, 0, 270, true, 26, 0.29);
+    Intake.spinFor(vex::directionType::rev, 2, vex::rotationUnits::rev, false);
+    pid.drive_straight(5, 60);
+    pid.drive_straight(-10, 80);
+    pid.Turn(285, 0.9, 6);
+    pid.drive_straight(10, 60);
+    pid.drive_straight(-15, 80);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -192,7 +177,7 @@ int Buttons()
     while (true)
     {
         IntakeControl();
-        CatapultButtons();
+        catapultHandler.buttons();
 
         vex::task::sleep(15);
     }
