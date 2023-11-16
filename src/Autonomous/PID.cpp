@@ -86,9 +86,6 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
 
     while (fabs(error) >= errorLoopEndValue || fabs(turnError) >= turnErrorLoopEndValue)
     {
-        // if (this->isInRange(fabs(error), fabs(previousError), range) && this->isInRange(fabs(turnError), fabs(previousTurnError), range))
-        //     break;
-
         cout << "Error: " << error << endl;
         cout << "Turn Error: " << turnError << endl;
         cout << "Turn Power: " << turnPower << endl;

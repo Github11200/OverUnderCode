@@ -11,21 +11,25 @@ brain Brain;
 controller Controller = controller(primary);
 
 // The drivetrain motors on the robot
-motor FrontRight = motor(PORT13, ratio6_1, false); // Done
-motor FrontLeft = motor(PORT16, ratio6_1, false);  // Done
-motor BackRight = motor(PORT15, ratio6_1, false);  // Done
-motor BackLeft = motor(PORT14, ratio6_1, false);   // Done
-
-motor_group Right = motor_group(FrontRight, BackRight);
-motor_group Left = motor_group(FrontLeft, BackLeft);
+motor FrontRight = motor(PORT13, ratio6_1, false);
+motor FrontLeft = motor(PORT16, ratio6_1, false);
+motor BackRight = motor(PORT15, ratio6_1, false);
+motor BackLeft = motor(PORT14, ratio6_1, false);
 
 // Motors for other subsystems
-motor Catapult = motor(PORT12, ratio36_1, false); // Done
-motor Intake = motor(PORT17, ratio36_1, false);   // Done
+motor Catapult = motor(PORT12, ratio36_1, false);
+motor Intake = motor(PORT17, ratio36_1, false);
+motor ClimbMotorRight = motor(PORT10, ratio36_1, false);
+motor ClimbMotorLeft = motor(PORT21, ratio36_1, false);
+
+// Motor groups
+motor_group Right = motor_group(FrontRight, BackRight);
+motor_group Left = motor_group(FrontLeft, BackLeft);
+motor_group ClimbMotors = motor_group(ClimbMotorRight, ClimbMotorLeft);
 
 // Sensors
-rotation CatapultRotationSensor = rotation(PORT11, false); // Done
-inertial Inertial = inertial(PORT3);                       // Done
+rotation CatapultRotationSensor = rotation(PORT11, false);
+inertial Inertial = inertial(PORT3);
 
 // Pistons
 digital_out wings = digital_out(Brain.ThreeWirePort.A);

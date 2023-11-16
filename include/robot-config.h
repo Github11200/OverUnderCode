@@ -11,12 +11,16 @@ extern vex::motor FrontLeft;
 extern vex::motor BackRight;
 extern vex::motor BackLeft;
 
-extern vex::motor_group Right;
-extern vex::motor_group Left;
-
 // Motors for other subsystems
 extern vex::motor Catapult;
 extern vex::motor Intake;
+extern vex::motor ClimbMotorRight;
+extern vex::motor ClimbMotorLeft;
+
+// Motor groups
+extern vex::motor_group Right;
+extern vex::motor_group Left;
+extern vex::motor_group ClimbMotors;
 
 // Sensors
 extern rotation CatapultRotationSensor;

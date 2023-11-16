@@ -20,6 +20,7 @@
 #include "../include/DriverControl/Catapult.h"
 #include "../include/DriverControl/Intake.h"
 #include "../include/DriverControl/Wings.h"
+#include "../include/DriverControl/ClimbingMechanism.h"
 
 using namespace vex;
 
@@ -178,8 +179,9 @@ int Buttons()
     {
         IntakeControl();
         catapultHandler.buttons();
+        ClampAndClimb();
 
-        vex::task::sleep(15);
+        vex::task::sleep(20);
     }
 
     return 0;
