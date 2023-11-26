@@ -5,7 +5,7 @@ using namespace vex;
 void CatapultHandler::rewind()
 {
     // Bring the catapult back into the down position
-    while (CatapultRotationSensor.position(vex::rotationUnits::deg) < 94.5)
+    while (!CatapultLimitSwitch.pressing())
         Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 
     Catapult.stop(vex::brakeType::hold);

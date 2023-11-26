@@ -13,14 +13,13 @@
 #include "../include/Autonomous/Odometry.h"
 #include "../include/Autonomous/PID.h"
 #include "../include/Autonomous/PurePursuit.h"
-#include "../include/Autonomous/DriverAutonomous.h"
+// #include "../include/Autonomous/DriverAutonomous.h"
 
 // Include the driver control files
 #include "../include/DriverControl/JoystickControl.h"
 #include "../include/DriverControl/Catapult.h"
 #include "../include/DriverControl/Intake.h"
 #include "../include/DriverControl/Wings.h"
-#include "../include/DriverControl/ClimbingMechanism.h"
 
 using namespace vex;
 
@@ -32,7 +31,7 @@ competition Competition;
 // Global variables
 PID pid;
 CatapultHandler catapultHandler;
-DriverAutonomous driverAutonomous(&catapultHandler);
+// DriverAutonomous driverAutonomous(&catapultHandler);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -50,7 +49,8 @@ void pre_auton(void)
     // Example: clearing encoders, setting servo positions, ...
 
     // Calibrate all of the sensors
-    CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
+    RightEncoder.setPosition(0, vex::rotationUnits::deg);
+    BackEncoder.setPosition(0, vex::rotationUnits::deg);
 
     Inertial.calibrate();
     wait(4.4, vex::timeUnits::sec);
@@ -179,7 +179,6 @@ int Buttons()
     {
         IntakeControl();
         catapultHandler.buttons();
-        ClampAndClimb();
 
         vex::task::sleep(20);
     }
@@ -202,8 +201,8 @@ int Buttons()
 
 void usercontrol(void)
 {
-    CatapultRotationSensor.setPosition(0, vex::rotationUnits::deg);
-    wings.set(false);
+    LeftWing.set(false);
+    RightWing.set(false);
 
     // Initialize tasks
     task joysticks = task(JoystickControl);

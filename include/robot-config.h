@@ -20,18 +20,16 @@ extern vex::motor ClimbMotorLeft;
 // Motor groups
 extern vex::motor_group Right;
 extern vex::motor_group Left;
-extern vex::motor_group ClimbMotors;
 
 // Sensors
-extern rotation CatapultRotationSensor;
 extern limit CatapultLimitSwitch;
 extern inertial Inertial;
 extern encoder RightEncoder;
 extern encoder BackEncoder;
 
 // Pistons
-extern digital_out IntakePiston;
-extern digital_out wings;
+extern digital_out RightWing;
+extern digital_out LeftWing;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
