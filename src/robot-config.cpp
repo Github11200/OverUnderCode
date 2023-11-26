@@ -29,7 +29,10 @@ motor_group ClimbMotors = motor_group(ClimbMotorRight, ClimbMotorLeft);
 
 // Sensors
 rotation CatapultRotationSensor = rotation(PORT11, false);
+limit CatapultLimitSwitch = limit(Brain.ThreeWirePort.C);
 inertial Inertial = inertial(PORT3);
+encoder RightEncoder = encoder(Brain.ThreeWirePort.D);
+encoder BackEncoder = encoder(Brain.ThreeWirePort.F);
 
 // Pistons
 digital_out wings = digital_out(Brain.ThreeWirePort.A);

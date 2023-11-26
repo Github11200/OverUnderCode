@@ -24,7 +24,10 @@ extern vex::motor_group ClimbMotors;
 
 // Sensors
 extern rotation CatapultRotationSensor;
+extern limit CatapultLimitSwitch;
 extern inertial Inertial;
+extern encoder RightEncoder;
+extern encoder BackEncoder;
 
 // Pistons
 extern digital_out IntakePiston;

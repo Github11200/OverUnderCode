@@ -17,21 +17,23 @@ class Odometry
 private:
     // Constants
     float wheelDiameter = 4.2;
+    float tB = 0;
+    float tR = 0;
 
     // Orientation
     long double changeInTheta = 0;
     long double previousTheta = 0;
 
     // Current encoder values
-    double currentLeftEncoders = 0;
+    double currentBackEncoders = 0;
     double currentRightEncoders = 0;
 
     // Previous encoder values
-    double previousLeftEncoders = 0;
+    double previousBackEncoders = 0;
     double previousRightEncoders = 0;
 
     // Encoder distances
-    double leftEncoderDistanceTraveled = 0;
+    double backEncoderDistanceTraveled = 0;
     double rightEncoderDistanceTraveled = 0;
 
     // Variables for storing the amount that the x and y coordinates have incremented by from the previous loop
