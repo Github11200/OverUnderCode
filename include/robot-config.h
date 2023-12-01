@@ -12,7 +12,8 @@ extern vex::motor BackRight;
 extern vex::motor BackLeft;
 
 // Motors for other subsystems
-extern vex::motor Catapult;
+extern vex::motor CatapultRight;
+extern vex::motor CatapultLeft;
 extern vex::motor Intake;
 extern vex::motor ClimbMotorRight;
 extern vex::motor ClimbMotorLeft;
@@ -20,6 +21,7 @@ extern vex::motor ClimbMotorLeft;
 // Motor groups
 extern vex::motor_group Right;
 extern vex::motor_group Left;
+extern vex::motor_group Catapult;
 
 // Sensors
 extern limit CatapultLimitSwitch;

@@ -52,9 +52,9 @@ void pre_auton(void)
     RightEncoder.setPosition(0, vex::rotationUnits::deg);
     BackEncoder.setPosition(0, vex::rotationUnits::deg);
 
-    Inertial.calibrate();
-    wait(4.4, vex::timeUnits::sec);
-    Controller.rumble(rumbleShort);
+    // Inertial.calibrate();
+    // wait(4.4, vex::timeUnits::sec);
+    // Controller.rumble(rumbleShort);
 }
 
 /*---------------------------------------------------------------------------*/

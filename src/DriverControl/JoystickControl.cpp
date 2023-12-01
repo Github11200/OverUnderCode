@@ -1,6 +1,7 @@
 #include "../../include/DriverControl/JoystickControl.h"
 
 using namespace vex;
+using namespace std;
 
 int sgn(double num)
 {
@@ -57,7 +58,6 @@ int JoystickControl()
             {
                 Left.stop(vex::brakeType::coast);
                 Right.stop(vex::brakeType::coast);
-                continue;
             }
 
             // Calculate the power by getting the length of the hypotenuse
@@ -72,15 +72,14 @@ int JoystickControl()
         else
         {
             // Update the x and y values so we can figure out the location of the joystick
-            power = Controller.Axis3.position();
-            turn = -Controller.Axis1.position();
+            power = -Controller.Axis4.position();
+            turn = Controller.Axis3.position();
 
             // Check if the values are within the deadzone, if so stop the motors and just continue
             if (x <= deadZone && x >= -deadZone && y <= deadZone && y >= -deadZone)
             {
                 Left.stop(vex::brakeType::coast);
                 Right.stop(vex::brakeType::coast);
-                continue;
             }
         }
 

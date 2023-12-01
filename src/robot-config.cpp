@@ -11,24 +11,26 @@ brain Brain;
 controller Controller = controller(primary);
 
 // The drivetrain motors on the robot
-motor FrontRight = motor(PORT13, ratio6_1, false);
-motor FrontLeft = motor(PORT16, ratio6_1, false);
-motor BackRight = motor(PORT15, ratio6_1, false);
-motor BackLeft = motor(PORT14, ratio6_1, false);
+motor FrontRight = motor(PORT16, ratio6_1, false); // Done
+motor FrontLeft = motor(PORT1, ratio6_1, false);   // Done
+motor BackRight = motor(PORT6, ratio6_1, false);   // Done
+motor BackLeft = motor(PORT13, ratio6_1, false);   // Done
 
 // Motors for other subsystems
-motor Catapult = motor(PORT12, ratio36_1, false);
-motor Intake = motor(PORT17, ratio36_1, false);
+motor CatapultRight = motor(PORT14, ratio36_1, false); // Done
+motor CatapultLeft = motor(PORT15, ratio36_1, false);  // Done
+motor Intake = motor(PORT12, ratio36_1, false);        // Done
 
 // Motor groups
 motor_group Right = motor_group(FrontRight, BackRight);
 motor_group Left = motor_group(FrontLeft, BackLeft);
+motor_group Catapult = motor_group(CatapultRight, CatapultLeft);
 
 // Sensors
-limit CatapultLimitSwitch = limit(Brain.ThreeWirePort.C);
+limit CatapultLimitSwitch = limit(Brain.ThreeWirePort.H); // Done
 inertial Inertial = inertial(PORT3);
-encoder RightEncoder = encoder(Brain.ThreeWirePort.D);
-encoder BackEncoder = encoder(Brain.ThreeWirePort.F);
+encoder RightEncoder = encoder(Brain.ThreeWirePort.C); // Done
+encoder BackEncoder = encoder(Brain.ThreeWirePort.E);  // Done
 
 // Pistons
 digital_out RightWing = digital_out(Brain.ThreeWirePort.A);
