@@ -49,8 +49,8 @@ void pre_auton(void)
     // Example: clearing encoders, setting servo positions, ...
 
     // Calibrate all of the sensors
-    RightEncoder.setPosition(0, vex::rotationUnits::deg);
-    BackEncoder.setPosition(0, vex::rotationUnits::deg);
+    // RightEncoder.setPosition(0, vex::rotationUnits::deg);
+    // BackEncoder.setPosition(0, vex::rotationUnits::deg);
 
     // Inertial.calibrate();
     // wait(4.4, vex::timeUnits::sec);
@@ -201,13 +201,72 @@ int Buttons()
 
 void usercontrol(void)
 {
-    LeftWing.set(false);
-    RightWing.set(false);
+    // LeftWing.set(false);
+    // RightWing.set(false);
 
     // Initialize tasks
-    task joysticks = task(JoystickControl);
-    task buttons = task(Buttons);
-    task wings = task(Wings);
+    // task joysticks = task(JoystickControl);
+    // task buttons = task(Buttons);
+    // task wings = task(Wings);
+
+    // Calibrate the inertial
+    Inertial.calibrate();
+    wait(5, vex::timeUnits::sec);
+    Controller.rumble(rumbleShort);
+
+    // Extend the right wing and take the tri ball out of the corner
+    RightWing.set(true);
+    wait(700, vex::timeUnits::msec);
+    pid.Turn(353.5, 1.5, 3);
+    pid.MoveToPoint(0, 0, 353.5, true, 23, 0.22, 0.9, 3.2, 0.84);
+    cout << "////////////////////////////////////////////////" << endl;
+
+    // Turn towards the goal and pull the right wing back
+    pid.Turn(300, 0.6, 3);
+    wait(700, vex::timeUnits::msec);
+    RightWing.set(false);
+
+    // Move forward a bit, start spinning the intake, and turn to face the goal
+    pid.drive_straight(9, 70);
+    wait(700, vex::timeUnits::msec);
+    Intake.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    wait(700, vex::timeUnits::msec);
+    pid.Turn(260, 1.2, 12);
+    wait(700, vex::timeUnits::msec);
+    cout << "TURN ONE ///////////////////////////////////////" << endl;
+
+    // Push the tri ball in, move the robot back, and turn off the intake
+    pid.drive_straight(8, 90);
+    pid.drive_straight(-26, 60);
+    Intake.stop(vex::brakeType::coast);
+    wait(700, vex::timeUnits::msec);
+
+    // Turn to have the catapult face the middle of the field and move backwards to the middle
+    // position ending at 90 degrees
+    pid.Turn(30);
+    pid.drive_straight(-20, 70);
+    pid.MoveToPoint(0, 0, 90, true, -36, 0.22, 1.2, 3);
+
+    // Turn to the left, and push the tri balls over the pipe
+    pid.Turn(15, 0.3);
+    LeftWing.set(true);
+    RightWing.set(true);
+    pid.drive_straight(-43, 100);
+
+    // Move forward a bit, turn to the right, drive straight, and then curve
+    // around the pipe to face the front
+    pid.drive_straight(10, 60);
+    pid.Turn(45, 0.3);
+    pid.drive_straight(60, 80);
+    pid.MoveToPoint(0, 0, 180, true, 33);
+    pid.drive_straight(30, 70);
+    cout
+        << "DONE //////////////////////////////////////////" << endl;
+
+    // pid.MoveToPoint(0, 0, 320, true, 27);
+    // cout << "done" << endl;
+    // RightWing.set(false);
+    // pid.MoveToPoint(0, 0, 270, true, 30);
 
     // User control code here, inside the loop
     while (1)

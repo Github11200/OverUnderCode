@@ -34,13 +34,18 @@ int JoystickControl()
 
     // If the drive mode is false, then it'll drive like normal, and if it is true then
     // it will use another way of calculating the joystick powers
-    double driveMode = false;
+    bool driveMode = false;
+
+    bool flipControls = false;
+
+    double left = 0;
+    double right = 0;
 
     // Run this as a task until the entire program stops
     while (true)
     {
         // If the x button is pressed then switch the drive mode
-        if (Controller.ButtonX.pressing())
+        if (Controller.ButtonA.pressing())
         {
             driveMode = !driveMode;
             wait(15, vex::timeUnits::msec);
@@ -72,7 +77,7 @@ int JoystickControl()
         else
         {
             // Update the x and y values so we can figure out the location of the joystick
-            power = -Controller.Axis4.position();
+            power = -Controller.Axis1.position();
             turn = Controller.Axis3.position();
 
             // Check if the values are within the deadzone, if so stop the motors and just continue
@@ -91,7 +96,7 @@ int JoystickControl()
 
         turn > 0 ? turn = pow(turn, 2) * 0.01 : turn = -(pow(turn, 2) * 0.01);
 
-        // Spin the motors based on the power and turn
+                // Spin the motors based on the power and turn
         Left.spin(vex::forward, power - turn, vex::percentUnits::pct);
         Right.spin(vex::forward, power + turn, vex::percentUnits::pct);
 

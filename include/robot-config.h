@@ -24,7 +24,7 @@ extern vex::motor_group Left;
 extern vex::motor_group Catapult;
 
 // Sensors
-extern limit CatapultLimitSwitch;
+extern rotation CatapultRotation;
 extern inertial Inertial;
 extern encoder RightEncoder;
 extern encoder BackEncoder;

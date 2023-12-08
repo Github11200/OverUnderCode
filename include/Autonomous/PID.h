@@ -37,7 +37,7 @@ public:
     /// @param targetTheta The angle at which you want the robot to be at once it is done moving in degrees
     /// @param isRelativeToZero Whether the x and y values are based off of the assumption that the robot is always starting at point (0, 0)
     /// @param desiredValue This parameter is used as the target position if the starting point of the PID is from 0 in inches
-    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000, double turnkPValue = 0.211, double errorLoopEndValue = 0.8, double turnErrorLoopEndValue = 2, double kpValue = 0.85);
+    void MoveToPoint(double targetX, double targetY, double targetTheta = NULL, bool isRelativeToZero = false, double desiredValue = 10000, double turnkPValue = 0.22, double errorLoopEndValue = 0.8, double turnErrorLoopEndValue = 2, double kpValue = 0.82);
 
     /// @brief This method will turn the robot to a certain angle relative to the field
     /// @param targetTheta This is the angle at which you want the robot to turn to in degrees

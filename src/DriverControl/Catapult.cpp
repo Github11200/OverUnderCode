@@ -5,7 +5,7 @@ using namespace vex;
 void CatapultHandler::rewind()
 {
     // Bring the catapult back into the down position
-    while (!CatapultLimitSwitch.pressing())
+    while (CatapultRotation.position(vex::rotationUnits::deg) < 81)
     {
         CatapultRight.spin(vex::directionType::rev, 35, vex::percentUnits::pct);
         CatapultLeft.spin(vex::directionType::fwd, 35, vex::percentUnits::pct);
@@ -17,9 +17,9 @@ void CatapultHandler::rewind()
 void CatapultHandler::buttons()
 {
     // THE L1 BUTTON IS FOR SINGLE CATAPULT FIRE
-    if (Controller.ButtonL1.pressing())
+    if (Controller.ButtonLeft.pressing())
         this->singleFire();
-    else if (Controller.ButtonL2.pressing()) // THE L2 BUTTON IS FOR RAPID FIRE
+    else if (Controller.ButtonDown.pressing()) // THE L2 BUTTON IS FOR RAPID FIRE
         this->rapidFire();
 
     this->rewind();

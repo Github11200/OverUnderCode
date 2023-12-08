@@ -86,10 +86,11 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
 
     while (fabs(error) >= errorLoopEndValue || fabs(turnError) >= turnErrorLoopEndValue)
     {
-        cout << "Error: " << error << endl;
+        // cout << "Error: " << error << endl;
         cout << "Turn Error: " << turnError << endl;
-        cout << "Turn Power: " << turnPower << endl;
-        cout << "Power: " << power << endl;
+        // cout << "Turn Power: " << turnPower << endl;
+        // cout << "Power: " << power << endl;
+        cout << "Inertial Heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
 
         // If the robot is starting relative to 0 then the average position will the the average
         // between the motors on the left side and the motors on the right side

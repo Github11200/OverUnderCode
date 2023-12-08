@@ -27,7 +27,7 @@ motor_group Left = motor_group(FrontLeft, BackLeft);
 motor_group Catapult = motor_group(CatapultRight, CatapultLeft);
 
 // Sensors
-limit CatapultLimitSwitch = limit(Brain.ThreeWirePort.H); // Done
+rotation CatapultRotation = rotation(PORT10);
 inertial Inertial = inertial(PORT3);
 encoder RightEncoder = encoder(Brain.ThreeWirePort.C); // Done
 encoder BackEncoder = encoder(Brain.ThreeWirePort.E);  // Done
