@@ -211,8 +211,14 @@ void usercontrol(void)
 
     // Calibrate the inertial
     Inertial.calibrate();
-    wait(5, vex::timeUnits::sec);
+    while (Inertial.isCalibrating())
+        wait(100, vex::timeUnits::msec);
+    Inertial.resetRotation();
     Controller.rumble(rumbleShort);
+
+    // TEST CODE
+    pid.Turn(270);
+    pid.MoveToPoint(0, 0, 270, true, 30);
 
     // Extend the right wing and take the tri ball out of the corner
     RightWing.set(true);
