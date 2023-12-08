@@ -48,6 +48,14 @@ int JoystickControl()
         if (Controller.ButtonA.pressing())
         {
             driveMode = !driveMode;
+
+            Controller.Screen.clearScreen();
+            Controller.Screen.setCursor(0, 0);
+            Controller.Screen.print(driveMode ? "TRUE" : "FALSE");
+            Brain.Screen.clearScreen();
+            Brain.Screen.setFillColor(driveMode ? vex::color::green : vex::color::red);
+            Brain.Screen.drawRectangle(0, 0, 48, 12);
+
             wait(15, vex::timeUnits::msec);
         }
 
@@ -96,10 +104,13 @@ int JoystickControl()
 
         turn > 0 ? turn = pow(turn, 2) * 0.01 : turn = -(pow(turn, 2) * 0.01);
 
-        if (flipControls) {
+        if (flipControls)
+        {
             left = power + turn;
             right = power - turn;
-        } else {
+        }
+        else
+        {
             left = power - turn;
             right = power + turn;
         }
