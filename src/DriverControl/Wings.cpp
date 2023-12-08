@@ -11,19 +11,7 @@ int Wings()
     while (true)
     {
         // If the right arrow button is pressed then extend or retract the wings based on their current state
-        if (Controller.ButtonLeft.pressing())
-        {
-            RightWing.set(rightWingExtended ? false : true);
-            rightWingExtended = rightWingExtended ? false : true;
-            wait(150, vex::timeUnits::msec);
-        }
-        else if (Controller.ButtonRight.pressing())
-        {
-            LeftWing.set(leftWingExtended ? false : true);
-            leftWingExtended = leftWingExtended ? false : true;
-            wait(150, vex::timeUnits::msec);
-        }
-        else if (Controller.ButtonDown.pressing())
+        if (Controller.ButtonL2.pressing())
         {
             RightWing.set(rightWingExtended ? false : true);
             LeftWing.set(leftWingExtended ? false : true);

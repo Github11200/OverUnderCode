@@ -96,9 +96,17 @@ int JoystickControl()
 
         turn > 0 ? turn = pow(turn, 2) * 0.01 : turn = -(pow(turn, 2) * 0.01);
 
-                // Spin the motors based on the power and turn
-        Left.spin(vex::forward, power - turn, vex::percentUnits::pct);
-        Right.spin(vex::forward, power + turn, vex::percentUnits::pct);
+        if (flipControls) {
+            left = power + turn;
+            right = power - turn;
+        } else {
+            left = power - turn;
+            right = power + turn;
+        }
+
+        // Spin the motors based on the power and turn
+        Left.spin(vex::forward, left, vex::percentUnits::pct);
+        Right.spin(vex::forward, right, vex::percentUnits::pct);
 
         vex::task::sleep(25);
     }
