@@ -87,10 +87,10 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
     while (fabs(error) >= errorLoopEndValue || fabs(turnError) >= turnErrorLoopEndValue)
     {
         // cout << "Error: " << error << endl;
-        cout << "Turn Error: " << turnError << endl;
+        // cout << "Turn Error: " << turnError << endl;
         // cout << "Turn Power: " << turnPower << endl;
         // cout << "Power: " << power << endl;
-        cout << "Inertial Heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
+        // cout << "Inertial Heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
 
         // If the robot is starting relative to 0 then the average position will the the average
         // between the motors on the left side and the motors on the right side
@@ -174,9 +174,9 @@ void PID::Turn(double targetTheta, double turnkPValue, double errorValue)
         // Calculate the power for each of the motors
         turnPower = (turnError * turnkP) + (turnDerivative * turnkD);
 
-        cout << "Turn error: " << turnError << endl;
-        cout << "Turn power: " << turnPower << endl;
-        cout << "Inertial heading: " << Inertial.heading(deg) << endl;
+        // cout << "Turn error: " << turnError << endl;
+        // cout << "Turn power: " << turnPower << endl;
+        // cout << "Inertial heading: " << Inertial.heading(deg) << endl;
 
         // Make the motors spin
         Right.spin(vex::directionType::rev, turnPower, vex::voltageUnits::volt);

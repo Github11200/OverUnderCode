@@ -47,16 +47,16 @@ int JoystickControl()
         // If the x button is pressed then switch the drive mode
         if (Controller.ButtonA.pressing())
         {
-            driveMode = !driveMode;
+            flipControls = !flipControls;
 
             Controller.Screen.clearScreen();
             Controller.Screen.setCursor(0, 0);
-            Controller.Screen.print(driveMode ? "TRUE" : "FALSE");
+            Controller.Screen.print(flipControls ? "TRUE" : "FALSE");
             Brain.Screen.clearScreen();
-            Brain.Screen.setFillColor(driveMode ? vex::color::green : vex::color::red);
+            Brain.Screen.setFillColor(flipControls ? vex::color::green : vex::color::red);
             Brain.Screen.drawRectangle(0, 0, 48, 12);
 
-            wait(15, vex::timeUnits::msec);
+            wait(100, vex::timeUnits::msec);
         }
 
         // Check what drive mode it is

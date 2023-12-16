@@ -51,6 +51,7 @@ void pre_auton(void)
     // RightEncoder.setPosition(0, vex::rotationUnits::deg);
     // BackEncoder.setPosition(0, vex::rotationUnits::deg);
 
+    CatapultRotation.setPosition(0, vex::rotationUnits::deg);
     CalibrateInertial();
 }
 
@@ -84,13 +85,13 @@ void autonomous(void)
     // ..........................................................................
 
     // Slot 1
-    CloseSideAutonomous();
+    // CloseSideAutonomous();
 
     // Slot 2
     FarSideAutonomous();
 
     // Slot 3
-    Skills();
+    // Skills();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -125,7 +126,7 @@ int Buttons()
 //     while (true)
 //     {
 //         driverAutonomous.record();
-//         vex::task::sleep(10);
+//         vex::task::sleep(40);
 //     }
 
 //     return 0;
@@ -133,17 +134,15 @@ int Buttons()
 
 void usercontrol(void)
 {
-    // LeftWing.set(false);
-    // RightWing.set(false);
+    CatapultRotation.setPosition(0, vex::rotationUnits::deg);
+    LeftWing.set(false);
+    RightWing.set(false);
 
-    // Initialize tasks
-    // task joysticks = task(JoystickControl);
-    // task buttons = task(Buttons);
-    // task wings = task(Wings);
+    // // Initialize tasks
+    task joysticks = task(JoystickControl);
+    task buttons = task(Buttons);
+    task wings = task(Wings);
 
-    CalibrateInertial();
-    CloseSideAutonomous();
-    
     // User control code here, inside the loop
     while (1)
     {

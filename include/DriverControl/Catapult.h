@@ -21,6 +21,9 @@ public:
 
     /// @brief This will continuously fire the catapult until the driver lets go of the L2 button
     void rapidFire();
+
+    /// @brief This will get the catapult un stuck by setting the motor to coast
+    void getCatapultUnstuck();
 };
 
 #endif

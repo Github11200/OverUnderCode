@@ -1,132 +1,1097 @@
-// #include "../../include/Autonomous/DriverAutonomous.h"
+#include "../../include/Autonomous/DriverAutonomous.h"
 
-// using namespace vex;
-// using namespace std;
+using namespace vex;
+using namespace std;
 
-// /*************************************************************************
-//     VALUES FOR THE COMMANDS STRING:
-//         1 -> Joystick forward/backward movement
-//         2 -> Joystick left/right movement
-//         3 -> Catapult single fire
-//         4 -> Catapult rapid fire
-//         5 -> Extend intake
-//         6 -> Rotate the intake to have it intake tri balls
-//         7 -> Rotate the intake to have it outtake tri balls
-//         8 -> Extend the right wing
-//         9 -> Extend the left wing
-// *************************************************************************/
+/*************************************************************************
+    VALUES FOR THE COMMANDS STRING:
+        1 -> Joystick forward/backward movement
+        2 -> Joystick left/right movement
+        3 -> Catapult single fire
+        4 -> Catapult rapid fire
+        5 -> Extend intake
+        6 -> Rotate the intake to have it intake tri balls
+        7 -> Rotate the intake to have it outtake tri balls
+        8 -> Extend the right wing
+        9 -> Extend the left wing
+*************************************************************************/
 
-// DriverAutonomous::DriverAutonomous(CatapultHandler *catapultHandler)
-// {
-//     this->catapult = catapultHandler;
-// }
+DriverAutonomous::DriverAutonomous(CatapultHandler *catapultHandler)
+{
+    this->catapult = catapultHandler;
+}
 
-// void DriverAutonomous::record()
-// {
-//     // Print out the joystick positions on the controller
-//     cout << Controller.Axis3.position() << ",";
-//     cout << Controller.Axis1.position() << ",";
+void DriverAutonomous::record()
+{
+    // Print out the joystick positions on the controller
+    cout << Controller.Axis3.position() << ",";
+    cout << -Controller.Axis1.position() << ",";
 
-//     // Print out whether the L1 and/or L2 buttons (for catapult) are being pressed
-//     cout << Controller.ButtonL1.pressing() << ",";
-//     cout << Controller.ButtonL2.pressing() << ",";
+    // Print out whether the L1 and/or L2 buttons (for catapult) are being pressed
+    cout << Controller.ButtonLeft.pressing() << ",";
+    cout << Controller.ButtonDown.pressing() << ",";
 
-//     // Print out whether the Up, R1, and/or R2 buttons (for intake) are being pressed
-//     cout << Controller.ButtonUp.pressing() << ",";
-//     cout << Controller.ButtonR1.pressing() << ",";
-//     cout << Controller.ButtonR2.pressing() << ",";
+    // Print out whether the Up, R1, and/or R2 buttons (for intake) are being pressed
+    cout << Controller.ButtonR1.pressing() << ",";
+    cout << Controller.ButtonR2.pressing() << ",";
 
-//     // Check if the X button (for wings) if being pressed
-//     cout << Controller.ButtonX.pressing() << ",";
-// }
+    // Check if the X button (for wings) if being pressed
+    cout << Controller.ButtonL2.pressing() << ",";
+}
 
-// void DriverAutonomous::execute()
-// {
-//     vector<int> commands = {4, 5, 6, 6};
-//     int commandNumber = 1;
+void DriverAutonomous::execute()
+{
+    vector<int> commands = {
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -13,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -22,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -23,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -23,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -54,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -67,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -68,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -67,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -62,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -49,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -46,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -48,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -75,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -78,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -77,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -66,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        34,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        53,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        67,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        69,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        70,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        70,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        69,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        53,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        33,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -13,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -18,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -18,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -43,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -45,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -46,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -46,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -47,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -46,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -46,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -47,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -48,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -49,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -49,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -49,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -51,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -49,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -51,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -51,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -52,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -54,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -57,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -58,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -58,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -57,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -58,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -57,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -56,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -55,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -40,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        23,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        37,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        43,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        43,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        42,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        42,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        42,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0};
+    int commandNumber = 1;
 
-//     bool isCatapultRapidFireOn = false;
-//     bool wingsExtended = false;
-//     double power = 0;
-//     double turn = 0;
+    bool isCatapultRapidFireOn = false;
+    bool wingsExtended = false;
+    double power = 0;
+    double turn = 0;
 
-//     for (int i = 0; i < commands.size(); ++i)
-//     {
-//         switch (commandNumber)
-//         {
-//         // This checks if we are at the second command, so now we know both the power and turn
-//         // of the joysticks, and we can calculate them and turn the motors
-//         case 2:
-//             power = commands[i - 1];
-//             turn = commands[i];
+    for (int i = 0; i < commands.size(); ++i)
+    {
+        switch (commandNumber)
+        {
+        // This checks if we are at the second command, so now we know both the power and turn
+        // of the joysticks, and we can calculate them and turn the motors
+        case 2:
+            power = commands[i - 1];
+            turn = commands[i];
 
-//             // Calculate the turn and power of the motors
-//             power > 0 ? power = pow(power, 2) * 0.01 : power = -(pow(power, 2) * 0.01);
-//             turn > 0 ? turn = pow(turn, 2) * 0.01 : turn = -(pow(turn, 2) * 0.01);
+            // Calculate the turn and power of the motors
+            power > 0 ? power = pow(power, 2) * 0.01 : power = -(pow(power, 2) * 0.01);
+            turn > 0 ? turn = pow(turn, 2) * 0.01 : turn = -(pow(turn, 2) * 0.01);
 
-//             // Spin the motors based on the inputs
-//             Left.spin(vex::forward, power - turn, vex::percentUnits::pct);
-//             Right.spin(vex::forward, power + turn, vex::percentUnits::pct);
+            // Spin the motors based on the inputs
+            Left.spin(vex::forward, power - turn, vex::percentUnits::pct);
+            Right.spin(vex::forward, power + turn, vex::percentUnits::pct);
 
-//             break;
+            break;
 
-//         // This is if we had pressed L1, so this will fire the catapult once
-//         case 3:
-//             if (commands[i])
-//             {
-//                 this->catapult->singleFire();
-//                 this->catapult->rewind();
-//             }
-//             break;
+        // This is if we had pressed L1, so this will fire the catapult once
+        case 3:
+            if (commands[i])
+            {
+                CatapultRight.spin(vex::directionType::rev, 70, vex::percentUnits::pct);
+                CatapultLeft.spin(vex::directionType::fwd, 70, vex::percentUnits::pct);
+                wait(0.2, vex::timeUnits::sec);
+                this->catapult->rewind();
+            }
+            break;
 
-//         // This is if we had pressed L2, so it will rapid fire the catapult or it will
-//         // stop it depending on whether or not it is already rapid firing
-//         case 4:
-//             if (commands[i])
-//             {
-//                 if (isCatapultRapidFireOn)
-//                 {
-//                     this->catapult->rewind();
-//                     isCatapultRapidFireOn = false;
-//                 }
-//                 else
-//                     this->catapult->rapidFire();
-//             }
-//             break;
+        // This is if we had pressed L2, so it will rapid fire the catapult or it will
+        // stop it depending on whether or not it is already rapid firing
+        case 4:
+            if (commands[i])
+            {
+                if (isCatapultRapidFireOn)
+                {
+                    this->catapult->rewind();
+                    isCatapultRapidFireOn = false;
+                }
+                else
+                {
+                    CatapultRight.spin(vex::directionType::rev, 70, vex::percentUnits::pct);
+                    CatapultLeft.spin(vex::directionType::fwd, 70, vex::percentUnits::pct);
+                    isCatapultRapidFireOn = true;
+                }
+            }
+            break;
 
-//         // This checks if we had pressed the up button, so it will extend the intake
-//         case 5:
-//             if (commands[i])
-//             {
-//                 IntakePiston.set(true);
-//                 wait(1, vex::timeUnits::sec);
-//                 IntakePiston.set(false);
-//             }
-//             break;
+        // This checks if we had pressed the up button, so it will extend the intake
+        case 5:
+            if (commands[i])
+                Intake.spin(vex::directionType::rev, 70, vex::percentUnits::pct);
+            break;
 
-//         // This checks if we pressed R1, and it will make the intake intake otherwise it will just have
-//         // it stopped at coast
-//         case 6:
-//             commands[i] ? Intake.spin(vex::directionType::fwd, 100, vex::percentUnits::pct) : Intake.stop(vex::brakeType::coast);
-//             break;
+        // This checks if we pressed R1, and it will make the intake intake otherwise it will just have
+        // it stopped at coast
+        case 6:
+            if (commands[i])
+                Intake.spin(vex::directionType::fwd, 70, vex::percentUnits::pct);
+            break;
 
-//         // This checks if we pressed R2, and it will make the intake outtake otherwise it will just have
-//         // it stopped at coast
-//         case 7:
-//             commands[i] ? Intake.spin(vex::directionType::rev, 100, vex::percentUnits::pct) : Intake.stop(vex::brakeType::coast);
-//             break;
+        // This checks if we pressed R2, and it will make the intake outtake otherwise it will just have
+        // it stopped at coast
+        case 7:
+            if (wingsExtended)
+            {
+                LeftWing.set(false);
+                RightWing.set(false);
+            }
+            else
+            {
+                LeftWing.set(true);
+                RightWing.set(true);
+            }
 
-//         // If the X button was pressed then either extend or retract the wings based on their current state
-//         case 8:
-//             if (commands[i])
-//                 wings.set(!wingsExtended);
-//             break;
+            break;
 
-//         default:
-//             break;
-//         }
+        default:
+            break;
+        }
 
-//         // If the command number is 8 then bring it back to one otherwise just increment it
-//         commandNumber == 8 ? commandNumber = 1 : ++commandNumber;
-//     }
-// }
+        // If the command number is 8 then bring it back to one otherwise just increment it
+        commandNumber == 7 ? commandNumber = 1 : ++commandNumber;
+    }
+}
