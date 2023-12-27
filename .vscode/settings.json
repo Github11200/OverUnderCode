@@ -3,6 +3,7 @@
 		"${config:vexrobotics.vexcode.Cpp.Sdk.Home}\\V5\\V5_20220726_10_00_00\\vexv5\\gcc\\include\\sys"
 	],
 	"files.associations": {
-		"ostream": "cpp"
+		"ostream": "cpp",
+		"cmath": "cpp"
 	}
 }

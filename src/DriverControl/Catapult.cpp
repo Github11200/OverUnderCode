@@ -7,10 +7,7 @@ void CatapultHandler::rewind()
 {
     // Bring the catapult back into the down position
     while (CatapultRotation.position(vex::rotationUnits::deg) < 81)
-    {
-        CatapultRight.spin(vex::directionType::rev, 35, vex::percentUnits::pct);
-        CatapultLeft.spin(vex::directionType::fwd, 35, vex::percentUnits::pct);
-    }
+        Catapult.spin(vex::directionType::rev, 80, vex::percentUnits::pct);
 
     Catapult.stop(vex::brakeType::hold);
 }

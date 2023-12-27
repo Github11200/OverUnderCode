@@ -2,11 +2,11 @@
 
 using namespace vex;
 
-Point::Point(double x, double y, double speed, double lookAheadDistance)
+Point::Point(double x, double y, double orientation, double lookAheadDistance)
 {
     this->x = x;
     this->y = y;
-    this->speed = speed;
+    this->orientation = orientation;
     this->lookAheadDistance = lookAheadDistance;
 }
 
@@ -73,8 +73,8 @@ Point PurePursuit::chooseGoalPoint()
         double y2Sol = (-D * dx - fabs(dy) * sqrt(discriminant)) / pow(dr, 2);
 
         // Create two objects with the coordinates of the solutions
-        Point sol1(x1Sol + x, y1Sol + y, pointTwo.speed, pointTwo.lookAheadDistance);
-        Point sol2(x2Sol + x, y2Sol + y, pointTwo.speed, pointTwo.lookAheadDistance);
+        Point sol1(x1Sol + x, y1Sol + y, pointTwo.orientation, pointTwo.lookAheadDistance);
+        Point sol2(x2Sol + x, y2Sol + y, pointTwo.orientation, pointTwo.lookAheadDistance);
 
         // Calculate min and max values for the coordinates for both points
         double minX = min(pointOne.x, pointTwo.x);
@@ -96,12 +96,12 @@ Point PurePursuit::chooseGoalPoint()
 
             // Check if the robot is already at the end of the path
             if (this->isInRange(x, endX, 1) && this->isInRange(y, endY, 1))
-                return goalPt;
+                return goalPt; // If the robot is at the end of the path then return the goal point with everything set to 0 which means the robot is at the end
 
             // Again check whether the robot is at the end of the path by figuring out the length of the
             // hypoteneuse and check if that is less than a certain amount of the look ahead distance
             if (sqrt(pow(endX - x, 2) + pow(endY - y, 2)) <= pointTwo.lookAheadDistance - (pointTwo.lookAheadDistance - 2))
-                return goalPt;
+                return goalPt; // If the robot is at the end of the path then return the goal point with everything set to 0 which means the robot is at the end
 
             // Check whether the distance between the robot and the last point in the path
             // is less than the look ahead distance, and if it is then just return the goal
@@ -111,7 +111,7 @@ Point PurePursuit::chooseGoalPoint()
                 goalPt.x = endX;
                 goalPt.y = endY;
                 goalPt.lookAheadDistance = pointTwo.lookAheadDistance;
-                goalPt.speed = pointTwo.speed;
+                goalPt.orientation = pointTwo.orientation;
                 return goalPt;
             }
         }
@@ -142,4 +142,8 @@ Point PurePursuit::chooseGoalPoint()
     }
 
     return goalPt;
+}
+
+void PurePursuit::executePath(vector<Point> Points)
+{
 }

@@ -14,10 +14,10 @@ struct Point
 {
     double x;
     double y;
-    float speed;
-    float lookAheadDistance;
+    double orientation;
+    double lookAheadDistance;
 
-    Point(double x, double y, double speed, double lookAheadDistance);
+    Point(double x, double y, double orientation, double lookAheadDistance);
 };
 
 class PurePursuit
@@ -51,6 +51,10 @@ public:
     /// @brief This method finds out what the best goal point is for the robot to follow
     /// @return A point which has the x and y coordinates, speed, and the look ahead distance
     Point chooseGoalPoint();
+
+    /// @brief This method will execute the path given to it
+    /// @param Points These are the points along the path
+    void executePath(vector<Point> Points);
 };
 
 #endif
