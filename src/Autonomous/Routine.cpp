@@ -84,7 +84,14 @@ void FarSideAutonomous()
     pid.drive_straight(2, 50);
     wings.set(true);
 
+    // Move the robot back, push in the tri balls, and get the wings up
     pid.drive_straight(-22.5, 80);
+    wings.set(false);
+
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 353, true, 26);
+    pid.Turn(93, deafultTurnErrorConstants);
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 93, true, -25.8);
+    pid.Turn(87, defaultTurnErrorConstants);
 }
 
 void CloseSideAutonomous()
