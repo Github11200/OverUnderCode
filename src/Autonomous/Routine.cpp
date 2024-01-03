@@ -74,7 +74,17 @@ void FarSideAutonomous()
     Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 48, true, 16.5);
 
+    // Move back, turn to face the goal, and outtake a second tri ball
     pid.drive_straight(-3, 50);
+    pid.Turn(163, defaultTurnErrorConstants);
+    Intake.spinFor(vex::directionType::fwd, 1, vex::rotationUnits::rev, false);
+
+    // Turn so the back of the robot faces the goal, move the robot forward a bit, and then deploy the wings
+    pid.Turn(353, defaultTurnErrorConstants);
+    pid.drive_straight(2, 50);
+    wings.set(true);
+
+    pid.drive_straight(-22.5, 80);
 }
 
 void CloseSideAutonomous()
