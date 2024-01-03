@@ -8,7 +8,7 @@ void IntakeControl()
     while (Controller.ButtonR1.pressing() || Controller.ButtonR2.pressing())
     {
         if (Controller.ButtonR1.pressing())
-            Intake.spin(vex::directionType::rev, 70, vex::percentUnits::pct);
+            Intake.spin(vex::directionType::rev, 90, vex::percentUnits::pct);
         else if (Controller.ButtonR2.pressing())
             Intake.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
     }

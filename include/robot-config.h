@@ -8,30 +8,33 @@ extern vex::controller Controller;
 // The drivetrain motors on the robot
 extern vex::motor FrontRight;
 extern vex::motor FrontLeft;
+extern vex::motor MiddleRight;
+extern vex::motor MiddleLeft;
 extern vex::motor BackRight;
 extern vex::motor BackLeft;
 
 // Motors for other subsystems
-extern vex::motor CatapultRight;
-extern vex::motor CatapultLeft;
+extern vex::motor Catapult;
+extern vex::motor Blocker;
+// extern vex::motor CatapultRight;
+// extern vex::motor CatapultLeft;
 extern vex::motor Intake;
-extern vex::motor ClimbMotorRight;
-extern vex::motor ClimbMotorLeft;
+// extern vex::motor ClimbMotorRight;
+// extern vex::motor ClimbMotorLeft;
 
 // Motor groups
 extern vex::motor_group Right;
 extern vex::motor_group Left;
-extern vex::motor_group Catapult;
+// extern vex::motor_group Catapult;
 
 // Sensors
-extern rotation CatapultRotation;
+// extern rotation CatapultRotation;
 extern inertial Inertial;
-extern encoder RightEncoder;
-extern encoder BackEncoder;
+// extern encoder RightEncoder;
+// extern encoder BackEncoder;
 
 // Pistons
-extern digital_out RightWing;
-extern digital_out LeftWing;
+extern digital_out wings;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

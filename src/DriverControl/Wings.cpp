@@ -5,6 +5,7 @@ using namespace vex;
 int Wings()
 {
     // This stores the value for whether or not the wing is extended
+    static bool wingsExtended = false;
     static bool rightWingExtended = false;
     static bool leftWingExtended = false;
 
@@ -13,11 +14,8 @@ int Wings()
         // If the right arrow button is pressed then extend or retract the wings based on their current state
         if (Controller.ButtonL2.pressing())
         {
-            RightWing.set(rightWingExtended ? false : true);
-            LeftWing.set(leftWingExtended ? false : true);
-
-            rightWingExtended = rightWingExtended ? false : true;
-            leftWingExtended = leftWingExtended ? false : true;
+            wings.set(wingsExtended ? false : true);
+            wingsExtended = wingsExtended ? false : true;
 
             wait(150, vex::timeUnits::msec);
         }

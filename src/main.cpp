@@ -10,8 +10,8 @@
 #include "vex.h"
 
 // Include the autonomous files
-#include "../include/Autonomous/Odometry.h"
-#include "../include/Autonomous/PurePursuit.h"
+// #include "../include/Autonomous/Odometry.h"
+// #include "../include/Autonomous/PurePursuit.h"
 #include "../include/Autonomous/Routine.h"
 // #include "../include/Autonomous/DriverAutonomous.h"
 
@@ -20,6 +20,7 @@
 #include "../include/DriverControl/Catapult.h"
 #include "../include/DriverControl/Intake.h"
 #include "../include/DriverControl/Wings.h"
+#include "../include/DriverControl/Blocker.h"
 
 using namespace vex;
 
@@ -51,8 +52,8 @@ void pre_auton(void)
     // RightEncoder.setPosition(0, vex::rotationUnits::deg);
     // BackEncoder.setPosition(0, vex::rotationUnits::deg);
 
-    CatapultRotation.setPosition(0, vex::rotationUnits::deg);
-    CalibrateInertial();
+    // CatapultRotation.setPosition(0, vex::rotationUnits::deg);
+    // CalibrateInertial();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -88,7 +89,7 @@ void autonomous(void)
     // CloseSideAutonomous();
 
     // Slot 2
-    FarSideAutonomous();
+    // FarSideAutonomous();
 
     // Slot 3
     // Skills();
@@ -113,6 +114,18 @@ int Buttons()
         IntakeControl();
         catapultHandler.buttons();
 
+        if (Controller.ButtonUp.pressing())
+        {
+            deploy();
+            wait(500, vex::timeUnits::msec);
+        }
+
+        if (Controller.ButtonDown.pressing())
+        {
+            rewindBlocker();
+            wait(500, vex::timeUnits::msec);
+        }
+
         vex::task::sleep(20);
     }
 
@@ -134,11 +147,15 @@ int Buttons()
 
 void usercontrol(void)
 {
-    CatapultRotation.setPosition(0, vex::rotationUnits::deg);
-    LeftWing.set(false);
-    RightWing.set(false);
+    // CatapultRotation.setPosition(0, vex::rotationUnits::deg);
+    // LeftWing.set(false);
+    // RightWing.set(false);
 
-    // // Initialize tasks
+    wings.set(false);
+
+    // CalibrateInertial();
+
+    // Initialize tasks
     task joysticks = task(JoystickControl);
     task buttons = task(Buttons);
     task wings = task(Wings);

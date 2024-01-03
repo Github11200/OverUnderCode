@@ -11,31 +11,31 @@ brain Brain;
 controller Controller = controller(primary);
 
 // The drivetrain motors on the robot
-motor FrontRight = motor(PORT14, ratio6_1, false);
-motor FrontLeft = motor(PORT13, ratio6_1, false);
-motor MiddleRight = motor(PORT15, ratio6_1, false);
-motor MiddleLeft = motor(PORT18, ratio6_1, false);
-motor BackRight = motor(PORT11, ratio6_1, false);
-motor BackLeft = motor(PORT16, ratio6_1, false);
+motor FrontRight = motor(PORT20, ratio6_1, false);  // Done
+motor FrontLeft = motor(PORT10, ratio6_1, false);   // Done
+motor MiddleRight = motor(PORT17, ratio6_1, false); // Done
+motor MiddleLeft = motor(PORT9, ratio6_1, false);   // Done
+motor BackRight = motor(PORT18, ratio6_1, false);   // Done
+motor BackLeft = motor(PORT8, ratio6_1, false);     // Done
 
 // Motors for other subsystems
-motor Catapult = motor(PORT18, ratio36_1, false);
-motor Intake = motor(PORT12, ratio36_1, false);
+motor Catapult = motor(PORT1, ratio36_1, false); // Done
+motor Intake = motor(PORT21, ratio36_1, false);  // Done
+motor Blocker = motor(PORT15, ratio18_1, false); // Done
 
 // Motor groups
 motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
-motor_group Catapult = motor_group(CatapultRight, CatapultLeft);
 
 // Sensors
-rotation CatapultRotation = rotation(PORT20);
-inertial Inertial = inertial(PORT19);
-encoder RightEncoder = encoder(Brain.ThreeWirePort.C);
-encoder BackEncoder = encoder(Brain.ThreeWirePort.E);
+inertial Inertial = inertial(PORT14); // Done
+// encoder RightEncoder = encoder(Brain.ThreeWirePort.C);
+// encoder BackEncoder = encoder(Brain.ThreeWirePort.E);
 
 // Pistons
-digital_out RightWing = digital_out(Brain.ThreeWirePort.A);
-digital_out LeftWing = digital_out(Brain.ThreeWirePort.B);
+digital_out wings = digital_out(Brain.ThreeWirePort.H);
+// digital_out RightWing = digital_out(Brain.ThreeWirePort.A);
+// digital_out LeftWing = digital_out(Brain.ThreeWirePort.B);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

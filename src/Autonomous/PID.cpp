@@ -23,7 +23,7 @@ double PID::findMinAngle(double targetAngle, double currentHeading)
 
 float PID::Inches_To_Degrees(float inches)
 {
-    float Wheel_Circumfrance = 2 * M_PI * 2;
+    float Wheel_Circumfrance = M_PI * 3.25;
 
     float degrees = (inches / Wheel_Circumfrance) * 360;
 
@@ -38,7 +38,15 @@ bool PID::isInRange(double num, double target, double range)
         return false;
 }
 
-void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool isRelativeToZero, double desiredValue, double turnkPValue, double errorLoopEndValue, double turnErrorLoopEndValue, double kpValue)
+void PID::MoveToPoint(double targetX,
+                      double targetY,
+                      double errorConstants[3],
+                      double turnErrorConstants[3],
+                      double targetTheta,
+                      bool isRelativeToZero,
+                      double desiredValue,
+                      double errorLoopEndValue,
+                      double turnErrorLoopEndValue)
 {
     // The total power for turning and moving forward
     double power = 0;
@@ -59,14 +67,15 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
     double angle = 0;
 
     // Constants
-    float kP = kpValue;
-    float kI = 0.01;
-    float kD = 0.01;
-    float wheelDiameter = 4;
+    float kP = errorConstants[0];
+    float kI = errorConstants[1];
+    float kD = errorConstants[2];
+    double circumfrance = M_PI * 3.25;
 
-    float turnkP = turnkPValue;
-    float turnkI = 0.08;
-    float turnkD = 0.05;
+    float turnkP = turnErrorConstants[0];
+    float turnkI = turnErrorConstants[1];
+    float turnkD = turnErrorConstants[2];
+
     int maxErrorForIntegral = 100;
     int maxTurnErrorForTurnIntegral = 90;
     int dT = 15;
@@ -96,10 +105,10 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
         // between the motors on the left side and the motors on the right side
         if (isRelativeToZero)
         {
-            leftPositionAverage = -((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg)) / 2);
-            rightPositionAverage = ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg)) / 2);
+            leftPositionAverage = -((FrontLeft.position(vex::rotationUnits::deg) + BackLeft.position(vex::rotationUnits::deg) + MiddleLeft.position(vex::rotationUnits::deg)) / 3);
+            rightPositionAverage = ((FrontRight.position(vex::rotationUnits::deg) + BackRight.position(vex::rotationUnits::deg) + MiddleRight.position(vex::rotationUnits::deg))) / 3;
             averagePosition = (leftPositionAverage + rightPositionAverage) / 2;
-            inchesTraveled = ((averagePosition / 840) * wheelDiameter * M_PI);
+            inchesTraveled = ((270 * (averagePosition / 360)) / 360) * circumfrance;
         }
 
         /*=================================================================
@@ -108,6 +117,12 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
 
         /*****************************ERROR*****************************/
         error = (desiredValue - inchesTraveled);
+
+        /*****************************INTEGRAL*****************************/
+        fabs(error) < 0 || fabs(error) >= maxErrorForIntegral ? integral = 0 : integral += error;
+
+        /*****************************DERIVATIVE*****************************/
+        derivative = error - previousError;
 
         /*=================================================================
                             Turning towards target point
@@ -119,12 +134,15 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
         //     angle += 360;
         turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
 
-        // /*****************************TURN DERIVATIVE*****************************/
+        /*****************************TURN INTEGRAL*****************************/
+        fabs(turnError) < 0 || fabs(turnError) >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+
+        /*****************************TURN DERIVATIVE*****************************/
         turnDerivative = turnError - previousTurnError;
 
         // Calculate the powers for going straight and turning
-        power = (error * kP);
-        turnPower = ((turnError * turnkP) + (turnDerivative * turnkD));
+        power = (error * kP) + (integral * kI) + (derivative * kD);
+        turnPower = (turnError * kP) + (turnIntegral * kI) + (turnDerivative * kD);
 
         // Spin the motors based on the values
         Left.spin(vex::directionType::rev, power + turnPower, vex::voltageUnits::volt);
@@ -136,9 +154,11 @@ void PID::MoveToPoint(double targetX, double targetY, double targetTheta, bool i
 
         wait(dT, vex::timeUnits::msec);
     }
+
+    cout << "DONE MOVING /////////////////////////////////////////////" << endl;
 }
 
-void PID::Turn(double targetTheta, double turnkPValue, double errorValue)
+void PID::Turn(double targetTheta, double turnErrorConstants[3], double errorValue)
 {
     double turnPower = 0;
 
@@ -151,9 +171,9 @@ void PID::Turn(double targetTheta, double turnkPValue, double errorValue)
     double turnDerivative = 0;
 
     // Constants
-    float turnkP = turnkPValue;
-    float turnkI = 0.01;
-    float turnkD = 0.02;
+    float turnkP = turnErrorConstants[0];
+    float turnkI = turnErrorConstants[1];
+    float turnkD = turnErrorConstants[2];
     int maxTurnErrorForTurnIntegral = 60;
     int dT = 15;
 
@@ -162,6 +182,10 @@ void PID::Turn(double targetTheta, double turnkPValue, double errorValue)
         // if (this->isInRange(fabs(turnError), fabs(previousTurnError), range))
         //     break;
 
+        // cout << "Turn error: " << turnError << endl;
+        // cout << "Turn power: " << turnPower << endl;
+        // cout << "Inertial heading: " << Inertial.heading(deg) << endl;
+
         /*****************************TURN ERROR*****************************/
         turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
 
@@ -169,14 +193,10 @@ void PID::Turn(double targetTheta, double turnkPValue, double errorValue)
         fabs(turnError) < 0 || fabs(turnError) >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
 
         /*****************************TURN DERIVATIVE*****************************/
-        // turnDerivative = turnError - previousTurnError;
+        turnDerivative = turnError - previousTurnError;
 
         // Calculate the power for each of the motors
         turnPower = (turnError * turnkP) + (turnDerivative * turnkD);
-
-        // cout << "Turn error: " << turnError << endl;
-        // cout << "Turn power: " << turnPower << endl;
-        // cout << "Inertial heading: " << Inertial.heading(deg) << endl;
 
         // Make the motors spin
         Right.spin(vex::directionType::rev, turnPower, vex::voltageUnits::volt);
@@ -187,7 +207,7 @@ void PID::Turn(double targetTheta, double turnkPValue, double errorValue)
         wait(dT, vex::timeUnits::msec);
     }
 
-    cout << "Done turning" << endl;
+    cout << "DONE TURNING /////////////////////////////////////////////" << endl;
 }
 
 /// @brief This method gets the robot to just drive straight, but it doesn't use a PID so it goes quite fast and is used for shorter distances that don't require a lot of accuracy
