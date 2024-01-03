@@ -96,7 +96,7 @@ int JoystickControl()
             }
         }
 
-        // Calculate the power and turn
+        // Calculate the power using the curve (we will leave the turning linear)
         power >
                 0
             ? power = pow(power, 2) * 0.01
