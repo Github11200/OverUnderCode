@@ -76,7 +76,7 @@ void PID::MoveToPoint(double targetX,
     float turnkI = turnErrorConstants[1];
     float turnkD = turnErrorConstants[2];
 
-    int maxErrorForIntegral = 100;
+    int maxErrorForIntegral = 1;
     int maxTurnErrorForTurnIntegral = 90;
     int dT = 15;
 
@@ -84,6 +84,8 @@ void PID::MoveToPoint(double targetX,
     double rightPositionAverage = 0;
     double averagePosition = 0;
     double inchesTraveled = 0;
+
+    int maxVoltage = 6;
 
     // If the robot's starting position is going to be from 0 every time (if we don't have time
     // to implement odometry) then set the position to 0 always
@@ -95,7 +97,8 @@ void PID::MoveToPoint(double targetX,
 
     while (fabs(error) >= errorLoopEndValue || fabs(turnError) >= turnErrorLoopEndValue)
     {
-        // cout << "Error: " << error << endl;
+        // cout << "Motor Voltage" << Left.voltage(vex::voltageUnits::volt) << endl;
+        cout << "Error: " << error << endl;
         // cout << "Turn Error: " << turnError << endl;
         // cout << "Turn Power: " << turnPower << endl;
         // cout << "Power: " << power << endl;
@@ -129,7 +132,7 @@ void PID::MoveToPoint(double targetX,
         =================================================================*/
 
         /*****************************TURN ERROR*****************************/
-        angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
+        // angle = atan2(targetY - y, targetX - x) * (180 / M_PI);
         // if (angle < 0)
         //     angle += 360;
         turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
@@ -143,6 +146,12 @@ void PID::MoveToPoint(double targetX,
         // Calculate the powers for going straight and turning
         power = (error * kP) + (integral * kI) + (derivative * kD);
         turnPower = (turnError * kP) + (turnIntegral * kI) + (turnDerivative * kD);
+
+        if (power > maxVoltage)
+            power = maxVoltage;
+
+        if (turnPower > maxVoltage)
+            turnPower = maxVoltage;
 
         // Spin the motors based on the values
         Left.spin(vex::directionType::rev, power + turnPower, vex::voltageUnits::volt);
@@ -177,26 +186,31 @@ void PID::Turn(double targetTheta, double turnErrorConstants[3], double errorVal
     int maxTurnErrorForTurnIntegral = 60;
     int dT = 15;
 
-    while (fabs(turnError) >= errorValue)
+    float maxVoltage = 5.2;
+
+    while (abs(turnError) >= errorValue)
     {
         // if (this->isInRange(fabs(turnError), fabs(previousTurnError), range))
         //     break;
 
         // cout << "Turn error: " << turnError << endl;
         // cout << "Turn power: " << turnPower << endl;
-        // cout << "Inertial heading: " << Inertial.heading(deg) << endl;
+        cout << "Inertial heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
 
         /*****************************TURN ERROR*****************************/
         turnError = this->findMinAngle(targetTheta, Inertial.heading(vex::rotationUnits::deg));
 
         /*****************************TURN INTEGRAL*****************************/
-        fabs(turnError) < 0 || fabs(turnError) >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
+        // fabs(turnError) < 0 || fabs(turnError) >= maxTurnErrorForTurnIntegral ? turnIntegral = 0 : turnIntegral += turnError;
 
         /*****************************TURN DERIVATIVE*****************************/
         turnDerivative = turnError - previousTurnError;
 
         // Calculate the power for each of the motors
         turnPower = (turnError * turnkP) + (turnDerivative * turnkD);
+
+        if (turnPower > maxVoltage)
+            turnPower = maxVoltage;
 
         // Make the motors spin
         Right.spin(vex::directionType::rev, turnPower, vex::voltageUnits::volt);
@@ -207,6 +221,7 @@ void PID::Turn(double targetTheta, double turnErrorConstants[3], double errorVal
         wait(dT, vex::timeUnits::msec);
     }
 
+    Inertial.heading(vex::rotationUnits::deg);
     cout << "DONE TURNING /////////////////////////////////////////////" << endl;
 }
 

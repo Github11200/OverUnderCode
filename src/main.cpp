@@ -23,6 +23,7 @@
 #include "../include/DriverControl/Blocker.h"
 
 using namespace vex;
+using namespace std;
 
 // A global instance of competition
 competition Competition;
@@ -154,6 +155,18 @@ void usercontrol(void)
     wings.set(false);
 
     // CalibrateInertial();
+
+    // FarSideAutonomous();
+    // PID pid;
+
+    // FarSideAutonomous();
+
+    // double errorConstants[3] = {0.647, 0, 0.8};
+    // double turnErrorConstants[3] = {0.2, 0, 0.15};
+
+    // double customTurnConstants[3] = {0.6, 0, 0.15};
+    // pid.Turn(6, customTurnConstants);
+    // cout << "Inertial Heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
 
     // Initialize tasks
     task joysticks = task(JoystickControl);

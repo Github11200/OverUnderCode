@@ -59,41 +59,15 @@ int JoystickControl()
             wait(100, vex::timeUnits::msec);
         }
 
-        // Check what drive mode it is
-        if (driveMode)
+        // Update the x and y values so we can figure out the location of the joystick
+        power = -Controller.Axis1.position();
+        turn = Controller.Axis3.position();
+
+        // Check if the values are within the deadzone, if so stop the motors and just continue
+        if (x <= deadZone && x >= -deadZone && y <= deadZone && y >= -deadZone)
         {
-            // // Update the x and y values so we can figure out the location of the joystick
-            // x = Controller.Axis3.position();
-            // y = -Controller.Axis1.position();
-
-            // // Check if the values are within the deadzone, if so stop the motors and just continue
-            // if (x <= deadZone && x >= -deadZone && y <= deadZone && y >= -deadZone)
-            // {
-            //     Left.stop(vex::brakeType::coast);
-            //     Right.stop(vex::brakeType::coast);
-            // }
-
-            // // Calculate the power by getting the length of the hypotenuse
-            // power = sqrt(pow(x, 2) + pow(y, 2));
-
-            // // Get the angle of the joystick
-            // angle = atan2(y, x) * (180 / M_PI) < 0 ? (atan2(y, x) * (180 / M_PI)) + 360 : atan2(y, x) * (180 / M_PI);
-
-            // // Find the minimum about the robot has to turn in order to get to the angle of the joystick and make that the turn power
-            // turn = findMinAngle(angle, Inertial.heading(vex::rotationUnits::deg));
-        }
-        else
-        {
-            // Update the x and y values so we can figure out the location of the joystick
-            power = -Controller.Axis1.position();
-            turn = Controller.Axis3.position();
-
-            // Check if the values are within the deadzone, if so stop the motors and just continue
-            if (x <= deadZone && x >= -deadZone && y <= deadZone && y >= -deadZone)
-            {
-                Left.stop(vex::brakeType::coast);
-                Right.stop(vex::brakeType::coast);
-            }
+            Left.stop(vex::brakeType::brake);
+            Right.stop(vex::brakeType::brake);
         }
 
         // Calculate the power using the curve (we will leave the turning linear)

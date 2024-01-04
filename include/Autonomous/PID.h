@@ -45,12 +45,12 @@ public:
         double targetTheta = 0,
         bool isRelativeToZero = true,
         double desiredValue = 10000,
-        double errorLoopEndValue = 0.2,
+        double errorLoopEndValue = 0.8,
         double turnErrorLoopEndValue = 2);
 
     /// @brief This method will turn the robot to a certain angle relative to the field
     /// @param targetTheta This is the angle at which you want the robot to turn to in degrees
-    void Turn(double targetTheta, double turnErrorConstants[3], double errorValue = 1.9);
+    void Turn(double targetTheta, double turnErrorConstants[3], double errorValue = 1.2);
 
     /// @brief This method gets the robot to just drive straight, but it doesn't use a PID so it goes quite fast and is used for shorter distances that don't require a lot of accuracy
     /// @param drive_distance is how far you want the robot to drive

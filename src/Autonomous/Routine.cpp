@@ -4,15 +4,19 @@ using namespace vex;
 using namespace std;
 
 PID pid;
-double defaultErrorConstants[3] = {0.22, 0.22, 0.22};
-double defaultTurnErrorConstants[3] = {0.8, 0.8, 0.8};
+double defaultErrorConstants[3] = {0.647, 0, 0.8};
+double defaultTurnErrorConstants[3] = {0.2, 0, 0.15};
+
+// double defaultTurnConstants[3] = {0.3, 0, 0.15};
 
 void CalibrateInertial()
 {
     Inertial.calibrate();
     while (Inertial.isCalibrating())
-        wait(800, vex::timeUnits::msec);
+        wait(890, vex::timeUnits::msec);
     wait(800, vex::timeUnits::msec);
+    Inertial.setHeading(0, vex::rotationUnits::deg);
+    cout << "Is Done calibrating: " << Inertial.isCalibrating() << endl;
     Controller.rumble(rumbleShort);
 }
 
@@ -30,57 +34,62 @@ void FarSideAutonomous()
     ==============================================*/
 
     // Intake the triball in front of the robot
-    Intake.spinFor(vex::directionType::rev, 2, vex::rotationUnits::rev, false);
-    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 0, true, 3.5);
+    Intake.setVelocity(90, vex::percentUnits::pct);
+    Intake.spinFor(vex::directionType::rev, 1.2, vex::rotationUnits::rev, false);
+    pid.drive_straight(7, 10);
+    // pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 0, true, 2);
 
     // Move the robot back and line it up to take the tri ball out of the corner
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 0, true, -32.5);
-    pid.Turn(326, defaultTurnErrorConstants);
+    double newTurnConstants[3] = {0.3, 0, 0.15};
+    pid.Turn(326, newTurnConstants);
 
     // Take the tri ball out of the corner
-    wings.set(true);
-    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 327, true, -15);
-    pid.Turn(301, defaultTurnErrorConstants);
-    wings.set(false);
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 326, true, -15);
+    newTurnConstants[0] = 0.29;
+    pid.Turn(301, newTurnConstants);
 
+    cout << "////////////////////////////////////////////" << endl;
     // Move back and turn to face the goal
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 301, true, -11);
-    pid.Turn(276, defaultTurnErrorConstants);
+    pid.Turn(276, newTurnConstants);
 
     // Push the tri balls in and move forward again
     pid.drive_straight(-9, 90);
-    pid.drive_straight(9, 60);
+    pid.drive_straight(9, 30);
 
     // Turn around and outtake the tri ball that was already inside the intake
-    pid.Turn(91, defaultTurnErrorConstants);
+    newTurnConstants[0] = 0.18;
+    pid.Turn(91, newTurnConstants);
     Intake.spinFor(vex::directionType::rev, 1.1, vex::rotationUnits::rev, false);
     pid.drive_straight(11, 90);
-    pid.drive_straight(-11, 60);
+    pid.drive_straight(-11, 30);
 
     // Turn to face the tri ball on the left, move forward, and intake it
-    pid.Turn(18, defaultTurnErrorConstants);
+    newTurnConstants[0] = 0.6;
+    pid.Turn(18, newTurnConstants);
     Intake.spinFor(vex::directionType::rev, 4, vex::rotationUnits::rev, false);
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 18, true, 49);
 
-    // Move the robot back, turn to face towards the goal, move forward, then outtake the tri ball
-    pid.drive_straight(-2, 50);
+    // Move the robot back, turn to face towards the goal, move forward, then outtake the tri ball pid.drive_straight(-2, 50);
     pid.Turn(143, defaultTurnErrorConstants);
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 143, true, 12);
     Intake.setVelocity(70, vex::percentUnits::pct);
     Intake.spinFor(vex::directionType::fwd, 1, vex::rotationUnits::rev, false);
 
     // Turn, move forward and intake another tri ball
-    pid.Turn(48, defaultTurnErrorConstants);
+    newTurnConstants[0] = 0.215;
+    pid.Turn(48, newTurnConstants);
     Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 48, true, 16.5);
 
-    // Move back, turn to face the goal, and outtake a second tri ball
-    pid.drive_straight(-3, 50);
+    // Move back, turn to face the goal, and outtake a second tri ball pid.drive_straight(-3, 50);
     pid.Turn(163, defaultTurnErrorConstants);
     Intake.spinFor(vex::directionType::fwd, 1, vex::rotationUnits::rev, false);
 
-    // Turn so the back of the robot faces the goal, move the robot forward a bit, and then deploy the wings
-    pid.Turn(353, defaultTurnErrorConstants);
+    // // Turn so the back of the robot faces the goal, move the robot forward a bit, and then deploy the wings
+    newTurnConstants[0] = 0.18;
+    pid.Turn(353, newTurnConstants);
     pid.drive_straight(2, 50);
     wings.set(true);
 
@@ -88,10 +97,12 @@ void FarSideAutonomous()
     pid.drive_straight(-22.5, 80);
     wings.set(false);
 
+    // Move back, turn, move back again, and turn a bit more to touch the pipe
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 353, true, 26);
-    pid.Turn(93, deafultTurnErrorConstants);
+    pid.Turn(93, defaultTurnErrorConstants);
     pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 93, true, -25.8);
-    pid.Turn(87, defaultTurnErrorConstants);
+    newTurnConstants[0] = 0.65;
+    pid.Turn(87, newTurnConstants);
 }
 
 void CloseSideAutonomous()
