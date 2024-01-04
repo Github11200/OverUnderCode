@@ -110,4 +110,39 @@ void CloseSideAutonomous()
     /*==============================================
                         SLOT 1
     ==============================================*/
+
+    // Turn the robot, and move towards the goal
+    double newTurnConstants[3] = {0.3, 0, 0.15};
+    newTurnConstants[0] = 0.29;
+    pid.Turn(45, newTurnConstants);
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 45, true, 26);
+
+    // Turn to face the goal, and outtake and push the tri ball into it
+    newTurnConstants[0] = 0.34;
+    pid.Turn(85, newTurnConstants);
+    Intake.setVelocity(90, vex::percentUnits::pct);
+    Intake.spinFor(vex::directionType::fwd, 1, vex::rotationUnits::rev, false);
+    pid.drive_straight(5.5, 90);
+
+    // Move back again and align the robot to get ready to take the tri ball out of the corner
+    pid.drive_straight(-5.5, 90);
+    newTurnConstants[0] = 0.29;
+    pid.Turn(62, newTurnConstants);
+
+    // Move back and turn to take the tri ball out of the corner
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 62, true, -18);
+    wings.set(true);
+    pid.Turn(27, defaultTurnErrorConstants);
+    wings.set(false);
+
+    // Move back and reset the position to 0
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 27, true, -14);
+    newTurnConstants[0] = 0.28;
+    pid.Turn(0, newTurnConstants);
+
+    // Deploy the wings, and move back to touch the pole
+    wings.set(true);
+    pid.MoveToPoint(0, 0, defaultErrorConstants, defaultTurnErrorConstants, 0, true, -28);
+
+    double newTurnConstants[3] = {0.3, 0, 0.15};
 }
