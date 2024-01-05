@@ -154,12 +154,12 @@ void usercontrol(void)
 
     wings.set(false);
 
-    // CalibrateInertial();
+    CalibrateInertial();
 
     // FarSideAutonomous();
     // PID pid;
 
-    // FarSideAutonomous();
+    Skills();
 
     // double errorConstants[3] = {0.647, 0, 0.8};
     // double turnErrorConstants[3] = {0.2, 0, 0.15};
@@ -169,9 +169,9 @@ void usercontrol(void)
     // cout << "Inertial Heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
 
     // Initialize tasks
-    task joysticks = task(JoystickControl);
-    task buttons = task(Buttons);
-    task wings = task(Wings);
+    // task joysticks = task(JoystickControl);
+    // task buttons = task(Buttons);
+    // task wings = task(Wings);
 
     // User control code here, inside the loop
     while (1)

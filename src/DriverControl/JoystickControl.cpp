@@ -61,7 +61,7 @@ int JoystickControl()
 
         // Update the x and y values so we can figure out the location of the joystick
         power = -Controller.Axis1.position();
-        turn = Controller.Axis3.position();
+        turn = 0.7 * Controller.Axis3.position();
 
         // Check if the values are within the deadzone, if so stop the motors and just continue
         if (x <= deadZone && x >= -deadZone && y <= deadZone && y >= -deadZone)
