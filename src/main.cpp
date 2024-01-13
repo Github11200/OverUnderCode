@@ -54,7 +54,7 @@ void pre_auton(void)
     // BackEncoder.setPosition(0, vex::rotationUnits::deg);
 
     // CatapultRotation.setPosition(0, vex::rotationUnits::deg);
-    // CalibrateInertial();
+    CalibrateInertial();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -86,13 +86,13 @@ void autonomous(void)
     // Insert autonomous user code here.
     // ..........................................................................
 
-    // Slot 1
+    // Slot 3
     // CloseSideAutonomous();
 
     // Slot 2
-    // FarSideAutonomous();
+    FarSideAutonomous();
 
-    // Slot 3
+    // Slot
     // Skills();
 }
 
@@ -154,12 +154,11 @@ void usercontrol(void)
 
     wings.set(false);
 
-    CalibrateInertial();
+    // CalibrateInertial();
+    // FarSideAutonomous();
 
     // FarSideAutonomous();
     // PID pid;
-
-    Skills();
 
     // double errorConstants[3] = {0.647, 0, 0.8};
     // double turnErrorConstants[3] = {0.2, 0, 0.15};
@@ -169,9 +168,9 @@ void usercontrol(void)
     // cout << "Inertial Heading: " << Inertial.heading(vex::rotationUnits::deg) << endl;
 
     // Initialize tasks
-    // task joysticks = task(JoystickControl);
-    // task buttons = task(Buttons);
-    // task wings = task(Wings);
+    task joysticks = task(JoystickControl);
+    task buttons = task(Buttons);
+    task wings = task(Wings);
 
     // User control code here, inside the loop
     while (1)

@@ -40,7 +40,7 @@ void CatapultHandler::rapidFire()
 {
     // While the user is pressing the l2 button, continue spinning the catapult
     while (Controller.ButtonL1.pressing())
-        Catapult.spin(vex::directionType::fwd, 90, vex::percentUnits::pct);
+        Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 }
 
 void CatapultHandler::getCatapultUnstuck()
