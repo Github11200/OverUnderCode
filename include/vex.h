@@ -1,14 +1,34 @@
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*    Module:       vex.h                                                     */
+/*    Author:       Vex Robotics                                              */
+/*    Created:      1 Feb 2019                                                */
+/*    Description:  Default header for V5 projects                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//
+
+#pragma once
 #include <math.h>
-#include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <iostream>
 
 #include "v5.h"
 #include "v5_vcs.h"
 
 #include "robot-config.h"
+#include "JAR-Template/odom.h"
+#include "JAR-Template/drive.h"
+#include "JAR-Template/util.h"
+#include "JAR-Template/PID.h"
+#include "autons.h"
+
+#include "DriverControl/Catapult.h"
+#include "DriverControl/Blocker.h"
+#include "DriverControl/Intake.h"
+#include "DriverControl/JoystickControl.h"
+#include "DriverControl/Wings.h"
 
 #define waitUntil(condition) \
     do                       \

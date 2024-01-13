@@ -6,8 +6,6 @@ int Wings()
 {
     // This stores the value for whether or not the wing is extended
     static bool wingsExtended = false;
-    static bool rightWingExtended = false;
-    static bool leftWingExtended = false;
 
     while (true)
     {

@@ -8,9 +8,8 @@ using code = vision::code;
 brain Brain;
 
 // VEXcode device constructors
-controller Controller = controller(primary);
+controller Controller;
 
-// The drivetrain motors on the robot
 motor FrontRight = motor(PORT20, ratio6_1, false);  // Done
 motor FrontLeft = motor(PORT10, ratio6_1, false);   // Done
 motor MiddleRight = motor(PORT17, ratio6_1, false); // Done
@@ -18,28 +17,19 @@ motor MiddleLeft = motor(PORT9, ratio6_1, false);   // Done
 motor BackRight = motor(PORT18, ratio6_1, false);   // Done
 motor BackLeft = motor(PORT8, ratio6_1, false);     // Done
 
-// Motors for other subsystems
+// Motors for other subystems
 motor Catapult = motor(PORT1, ratio36_1, false); // Done
 motor Intake = motor(PORT21, ratio36_1, false);  // Done
 motor Blocker = motor(PORT15, ratio18_1, false); // Done
 
-// Motor groups
-motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
+// Drivetrain motor groups
 motor_group Left = motor_group(FrontLeft, MiddleLeft, BackLeft);
-
-// Sensors
-inertial Inertial = inertial(PORT14); // Done
-// encoder RightEncoder = encoder(Brain.ThreeWirePort.C);
-// encoder BackEncoder = encoder(Brain.ThreeWirePort.E);
+motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
 
 // Pistons
 digital_out wings = digital_out(Brain.ThreeWirePort.H);
-// digital_out RightWing = digital_out(Brain.ThreeWirePort.A);
-// digital_out LeftWing = digital_out(Brain.ThreeWirePort.B);
 
 // VEXcode generated functions
-// define variable for remote controller enable/disable
-bool RemoteControlCodeEnabled = true;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
