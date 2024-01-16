@@ -1,6 +1,7 @@
 #include "vex.h"
 
 using namespace vex;
+using namespace std;
 competition Competition;
 
 // Global variables
@@ -219,13 +220,26 @@ int Buttons()
     return 0;
 }
 
+void CalibrateInertial()
+{
+    chassis.Gyro.calibrate();
+    while (chassis.Gyro.isCalibrating())
+        wait(890, vex::timeUnits::msec);
+    wait(800, vex::timeUnits::msec);
+    Controller.rumble(rumbleShort);
+}
+
 void usercontrol(void)
 {
     wings.set(false);
 
-    task joysticks = task(JoystickControl);
-    task buttons = task(Buttons);
-    task wings = task(Wings);
+    // task joysticks = task(JoystickControl);
+    // task buttons = task(Buttons);
+    // task wings = task(Wings);
+    chassis.drive_distance(30, 0, 3, 3, 1, 1500, 1500);
+    cout << "Done" << endl;
+    chassis.turn_to_angle(90, 3, 2, 1000, 1000);
+    cout << "Heading: " << chassis.Gyro.heading(vex::rotationUnits::deg) << endl;
 
     // User control code here, inside the loop
     while (1)
@@ -233,11 +247,11 @@ void usercontrol(void)
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.
-
-        // ........................................................................
-        // Insert user code here. This is where you use the joystick values to
-        // update your motors, etc.
-        // ........................................................................
+        // hi jinay
+        //  ........................................................................
+        //  Insert user code here. This is where you use the joystick values to
+        //  update your motors, etc.
+        //  ........................................................................
 
         // Replace this line with chassis.control_tank(); for tank drive
         // or chassis.control_holonomic(); for holo drive.
