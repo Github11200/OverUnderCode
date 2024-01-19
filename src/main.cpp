@@ -233,13 +233,9 @@ void usercontrol(void)
 {
     wings.set(false);
 
-    // task joysticks = task(JoystickControl);
+    task joysticks = task(JoystickControl);
     // task buttons = task(Buttons);
     // task wings = task(Wings);
-    chassis.drive_distance(30, 0, 3, 3, 1, 1500, 1500);
-    cout << "Done" << endl;
-    chassis.turn_to_angle(90, 3, 2, 1000, 1000);
-    cout << "Heading: " << chassis.Gyro.heading(vex::rotationUnits::deg) << endl;
 
     // User control code here, inside the loop
     while (1)
