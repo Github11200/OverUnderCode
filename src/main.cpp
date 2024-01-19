@@ -234,7 +234,7 @@ void usercontrol(void)
     wings.set(false);
 
     task joysticks = task(JoystickControl);
-    cout << "yatharth cannot code even if his life depended on it" << endl;
+    cout << "verjote is annoying" << endl;
     // task buttons = task(Buttons);
     // task wings = task(Wings);
 
