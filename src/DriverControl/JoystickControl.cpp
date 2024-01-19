@@ -95,20 +95,10 @@ double findMinAngle(double targetAngle, double currentHeading)
 //     }
 // }
 
-double kP = 0.01;
-double kD = 0.01;
-
-double compute(double error)
-{
-    static double previousError = 0;
-    return (kP * error) + (kD * (error - previousError));
-    previousError = error;
-}
-
 int JoystickControl()
 {
-    double increment = 0.5;
-    double decrement = 0.5;
+    double increment = 0.4;
+    double decrement = 0.4;
     double speed = 0;
     double turn = 0;
 
@@ -126,7 +116,8 @@ int JoystickControl()
             Right.stop(vex::brakeType::coast);
         }
 
-        turn = 0.7 * Controller.Axis4.position();
+        // Map the turning from the joystick to just 12 volts
+        turn = pow(Controller.Axis4.position(), 2) / (10000 / 12);
 
         Left.spin(vex::directionType::fwd, speed + turn, vex::voltageUnits::volt);
         Right.spin(vex::directionType::fwd, speed - turn, vex::voltageUnits::volt);
