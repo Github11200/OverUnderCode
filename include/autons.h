@@ -14,3 +14,5 @@ void full_test();
 void odom_test();
 void tank_odom_test();
 void holonomic_odom_test();
+void far_side_autonomous();
+void close_side_autonomous();
