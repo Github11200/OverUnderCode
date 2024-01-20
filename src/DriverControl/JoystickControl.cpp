@@ -94,7 +94,7 @@ double findMinAngle(double targetAngle, double currentHeading)
 //         vex::task::sleep(25);
 //     }
 // }
-
+// uwu daddy gargy,i wanna fuck you so hard ---jinay <3
 int JoystickControl()
 {
     double increment = 0.4;
@@ -109,7 +109,7 @@ int JoystickControl()
             speed += increment;
         else if (Controller.ButtonL2.pressing() && speed > -12)
             speed -= decrement;
-        else
+        else if (!Controller.ButtonL2.pressing() && !Controller.ButtonR2.pressing())
         {
             speed = 0;
             Left.stop(vex::brakeType::coast);

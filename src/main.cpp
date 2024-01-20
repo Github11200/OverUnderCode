@@ -233,10 +233,12 @@ void usercontrol(void)
 {
     wings.set(false);
 
-    task joysticks = task(JoystickControl);
-    cout << "verjote is annoying" << endl;
+    // task joysticks = task(JoystickControl);
     // task buttons = task(Buttons);
     // task wings = task(Wings);
+
+    CalibrateInertial();
+    close_side_autonomous();
 
     // User control code here, inside the loop
     while (1)
