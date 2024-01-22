@@ -129,28 +129,28 @@ void far_side_autonomous()
     chassis.drive_distance(14, 143);
     chassis.drive_distance(-27.5, 143);
 
-    // // Turn, move forward and intake another tri ball
+    // Turn, move forward and intake another tri ball
     chassis.turn_to_angle(90);
     Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
     chassis.drive_distance(17, 90);
 
-    // // Get the second tri ball and outtake
+    // Get the second tri ball and outtake
     chassis.turn_to_angle(180);
     Intake.spinFor(vex::directionType::fwd, 2, vex::rotationUnits::rev, false);
     chassis.drive_distance(20,180,11,6);
 
-    // // Move back, turn to face the third tri ball, and go forward to intake it
+    // Move back, turn to face the third tri ball, and go forward to intake it
     chassis.drive_distance(-17, 180);
     chassis.turn_to_angle(0);
     Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
     chassis.drive_distance(14, 0);
 
-    // // Turn to face the goal again, and outtake the tri ball
+    // Turn to face the goal again, and outtake the tri ball
     chassis.turn_to_angle(180);
     Intake.spinFor(vex::directionType::fwd, 3, vex::rotationUnits::rev, false);
     chassis.drive_distance(28, 180);
 
-    // // Move back, turn, move back again, and turn a bit more to touch the pipe
+    // Move back, turn, move back again, and turn a bit more to touch the pipe
     chassis.drive_distance(-30, 180);
     chassis.turn_to_angle(90);
     wings.set(true);
@@ -184,4 +184,8 @@ void close_side_autonomous()
     // // Turn back to 0 degrees, and move back to touch the pole
     // chassis.turn_to_angle(-27);
     // chassis.drive_distance(-37, 0);
+}
+
+void skills_autonomous() {
+    // Yatharth thinks he's a C compiler, no wonder he sucks at math...
 }
