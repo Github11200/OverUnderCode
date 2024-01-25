@@ -238,7 +238,7 @@ void usercontrol(void)
     // task wings = task(Wings);
 
     CalibrateInertial();
-    close_side_autonomous();
+    far_side_autonomous();
 
     // User control code here, inside the loop
     while (1)
