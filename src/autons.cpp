@@ -5,7 +5,7 @@ void default_constants()
     chassis.set_drive_constants(11, 1.6, 0, 10, 0);
     chassis.set_heading_constants(6, .4, 0, 1, 0);
     chassis.set_turn_constants(12, .4, .03, 3, 15);
-    chassis.set_swing_constants(12, .3, .001, 2, 15);
+    chassis.set_swing_constants(12, 1, .001, 2, 15);
     chassis.set_drive_exit_conditions(1.5, 300, 5000);
     chassis.set_turn_exit_conditions(1, 300, 3000);
     chassis.set_swing_exit_conditions(1, 300, 3000);
@@ -91,77 +91,83 @@ void far_side_autonomous()
     // Intake the tri ball in front of the robot
     Intake.setVelocity(90, vex::percentUnits::pct);
     Intake.spinFor(vex::directionType::rev, 1.55, vex::rotationUnits::rev, false);
-    chassis.drive_distance(7,0,10,6,.5,100,800);
+    chassis.drive_distance(6,0,10,6,.5,100,800);
 
     wait(0.8, vex::timeUnits::sec);
 
     // Move the robot back and line it up to take the tri ball out of the corner
     chassis.drive_distance(-32.5, 0,10,6,.5,100,800);
-    chassis.turn_to_angle(-45);
+    chassis.turn_to_angle(-45,10,.5,100,500);
 
 
     // Take the tri ball out of the corner
     chassis.drive_distance(-23, 315,10,6,.5,100,800);
-    chassis.turn_to_angle(-45);
+    chassis.turn_to_angle(-45,10,.5,100,800);
 
     // Push the tri balls in and move forward again
     chassis.drive_distance(-15, 270, 12, 12,.5,100,800);
     chassis.drive_distance(10, 270,10,6,.5,100,800);
 
     // // Turn around and outtake the tri ball that was already inside the intake
-     chassis.turn_to_angle(90);
+     chassis.turn_to_angle(90,10,.5,100,800);
      Intake.spinFor(vex::directionType::fwd, 1.3, vex::rotationUnits::rev, false);
      chassis.drive_distance(11, 91,10,6,.5,100,800);
      chassis.drive_distance(-15, 91,10,6,.5,100,800);
 
     // Turn to face the tri ball on the left, move forward, and intake it 
-    chassis.turn_to_angle(25); 
+    chassis.turn_to_angle(24.5,10,.5,100,800);
     Intake.setVelocity(90, vex::percentUnits::pct);
     Intake.spinFor(vex::directionType::rev, 6, vex::rotationUnits::rev, false); 
-    chassis.drive_distance(51,25,10,6,.5,100,800);
+    chassis.drive_distance(49, 24.5); 
 
-//     // // Move the robot back, turn to face towards the goal, move forward, then outtake the tri ball
-//     chassis.drive_distance(-2,90,10,6,.5,100,800);
-//     chassis.turn_to_angle(124);
-//     chassis.drive_distance(26, 143,10,6,.5,100,800);
-//     Intake.setVelocity(90, vex::percentUnits::pct);
-//     Intake.spinFor(vex::directionType::fwd, 1, vex::rotationUnits::rev, false);
-//     chassis.drive_distance(14, 143,10,6,.5,100,800);
-//     chassis.drive_distance(-27.5, 143);
+    // // Move the robot back, turn to face towards the goal, move forward, then outtake the tri ball
+    chassis.drive_distance(-2,90,10,6,.5,100,800);
+    chassis.turn_to_angle(100,10,.5,100,800);
+    chassis.drive_distance(19, 100,10,6,.5,100,800);
+    chassis.left_swing_to_angle(180);
+    Intake.setVelocity(90, vex::percentUnits::pct);
+    chassis.drive_distance(20,180,10,6,.5,100,800);
+    // Intake.setVelocity(90, vex::percentUnits::pct);
+    // Intake.spinFor(vex::directionType::fwd, 1, vex::rotationUnits::rev, false);
+    // chassis.drive_distance(18, 143,10,6,.5,100,800);
+    // chassis.drive_distance(-3,143,10,6,.5,100,800);
+    // chassis.turn_to_angle(13,10,.5,100,800);;
+   
 
-//     // // Turn, move forward and intake another tri ball
-//     chassis.turn_to_angle(90);
-//     Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
-//     chassis.drive_distance(17, 90,10,6,.5,100,800);
+    // // // // Turn, move forward and intake another tri ball
+    // Intake.setVelocity(90, vex::percentUnits::pct);
+    // Intake.spinFor(vex::directionType::rev, 6, vex::rotationUnits::rev, false);
+    // chassis.drive_distance(8,13,10,6,.5,100,800);
 
-//     // // Get the second tri ball and outtake
-//     chassis.turn_to_angle(180);
-//     Intake.spinFor(vex::directionType::fwd, 2, vex::rotationUnits::rev, false);
-//     chassis.drive_distance(20,180,11,6,.5,100,800);
+    // // // // Get the second tri ball and outtake
+    // chassis.turn_to_angle(180,10,.5,100,800);
+    // Intake.spinFor(vex::directionType::fwd, 2, vex::rotationUnits::rev, false);
+    // chassis.drive_distance(13,180,11,6,.5,100,800);
 
-//     // // Move back, turn to face the third tri ball, and go forward to intake it
-//     chassis.drive_distance(-17, 180,10,6,.5,100,800);
-//     chassis.turn_to_angle(0);
-//     Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
-//     chassis.drive_distance(14, 0,10,6,.5,100,800);
+    // // // // Move back, turn to face the third tri ball, and go forward to intake it
+    chassis.drive_distance(-17, 180,10,6,.5,100,800);
+    chassis.turn_to_angle(10,10,.5,100,800);
+    Intake.spinFor(vex::directionType::rev, 3, vex::rotationUnits::rev, false);
+    chassis.drive_distance(20, 10,10,6,.5,100,800);
 
-//     // // Turn to face the goal again, and outtake the tri ball
-//     chassis.turn_to_angle(180);
-//     Intake.spinFor(vex::directionType::fwd, 3, vex::rotationUnits::rev, false);
-//     chassis.drive_distance(29, 180,10,6,.5,100,800);
+    // // // // Turn to face the goal again, and outtake the tri ball
+    chassis.turn_to_angle(180,10,.5,100,800);
+    Intake.spinFor(vex::directionType::fwd, 3, vex::rotationUnits::rev, false);
+    chassis.drive_distance(35, 180,10,6,.5,100,800);
+    chassis.drive_distance(-10,180,10,6,.5,100,800);
 
-//     // // Move back, turn, move back again, and turn a bit more to touch the pipe
-//     chassis.drive_distance(-30, 180,10,6,.5,100,800);
-//     chassis.turn_to_angle(90);
-//     wings.set(true);
-//     chassis.drive_distance(-40,90,10,6,.5,100,800);
-//     chassis.turn_to_angle(195);
-// }
+    // // // Move back, turn, move back again, and turn a bit more to touch the pipe
+    // chassis.drive_distance(-30, 180,10,6,.5,100,800);
+    // chassis.turn_to_angle(90);
+    // wings.set(true);
+    // chassis.drive_distance(-40,90,10,6,.5,100,800);
+    // chassis.turn_to_angle(195);
+}
 
 void close_side_autonomous()
 {
     // Turn the robot towards the goal, and move it forward
-    chassis.turn_to_angle(45);
+    chassis.turn_to_angle(45,10);
     chassis.drive_distance(26, 45);
 
     // Turn to face the goal, outtake the tri ball, and push it in
