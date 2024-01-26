@@ -66,8 +66,8 @@ double findMinAngle(double targetAngle, double currentHeading)
 //         // Check if the values are within the deadzone, if so stop the motors and just continue
 //         if (x <= deadZone && x >= -deadZone && y <= deadZone && y >= -deadZone)
 //         {
-//             Left.stop(vex::brakeType::brake);
-//             Right.stop(vex::brakeType::brake);
+//             Left.stop(vex::brakeType::coast);
+//             Right.stop(vex::brakeType::coast);
 //         }
 
 //         // Calculate the power using the curve (we will leave the turning linear)

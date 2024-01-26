@@ -100,11 +100,21 @@ Drive chassis(
 int current_auton_selection = 0;
 bool auto_started = false;
 
+void CalibrateInertial()
+{
+    chassis.Gyro.calibrate();
+    while (chassis.Gyro.isCalibrating())
+        wait(890, vex::timeUnits::msec);
+    wait(800, vex::timeUnits::msec);
+    Controller.rumble(rumbleShort);
+}
+
 void pre_auton(void)
 {
     // Initializing Robot Configuration. DO NOT REMOVE!
     vexcodeInit();
     default_constants();
+    CalibrateInertial();
 
     while (auto_started == false)
     {                               // Changing the names below will only change their names on the
@@ -153,6 +163,7 @@ void pre_auton(void)
 
 void autonomous(void)
 {
+    far_side_autonomous();
     auto_started = true;
     switch (current_auton_selection)
     {
@@ -220,15 +231,6 @@ int Buttons()
     return 0;
 }
 
-void CalibrateInertial()
-{
-    chassis.Gyro.calibrate();
-    while (chassis.Gyro.isCalibrating())
-        wait(890, vex::timeUnits::msec);
-    wait(800, vex::timeUnits::msec);
-    Controller.rumble(rumbleShort);
-}
-
 void usercontrol(void)
 {
     wings.set(false);
@@ -238,7 +240,7 @@ void usercontrol(void)
     // task wings = task(Wings);
 
     CalibrateInertial();
-    far_side_autonomous();
+    close_side_autonomous();
 
     // User control code here, inside the loop
     while (1)
