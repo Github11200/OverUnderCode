@@ -151,10 +151,10 @@ void far_side_autonomous()
     chassis.drive_distance(20, 10,10,6,.5,100,800);
 
     // // // // Turn to face the goal again, and outtake the tri ball
-    chassis.turn_to_angle(180,10,.5,100,800);
-    Intake.spinFor(vex::directionType::fwd, 3, vex::rotationUnits::rev, false);
-    chassis.drive_distance(35, 180,10,6,.5,100,800);
-    chassis.drive_distance(-10,180,10,6,.5,100,800);
+    // chassis.turn_to_angle(180,10,.5,100,800);
+    // Intake.spinFor(vex::directionType::fwd, 3, vex::rotationUnits::rev, false);
+    // chassis.drive_distance(35, 180,10,6,.5,100,800);
+    // chassis.drive_distance(-10,180,10,6,.5,100,800);
 
     // // // Move back, turn, move back again, and turn a bit more to touch the pipe
     // chassis.drive_distance(-30, 180,10,6,.5,100,800);
