@@ -193,3 +193,64 @@ void close_side_autonomous()
     // chassis.turn_to_angle(-27);
     // chassis.drive_distance(-37, 0);
 }
+
+void skills_autonomous()
+{
+    // Turn right, move back, and swing to push the tri ball into the goal
+    chassis.turn_to_angle(45);
+    chassis.drive_distance(-26);
+    chassis.right_swing_to_angle(90);
+
+    // Move forwad, turn, move forward again, turn again, move back, and deploy wings
+    // to touch the match loading pipe for match loading
+    chassis.drive_distance(9, 90);
+    chassis.turn_to_angle(-65);
+    chassis.drive_distance(11, 25);
+    chassis.turn_to_angle(-49);
+    chassis.drive_distance(-3, 336);
+    wings.set(true);
+
+    // Start the slapper, and put the wings up again
+    Catapult.spin(vex::directionType::fwd, 90, vex::percentUnits::pct);
+    wings.set(false);
+
+    // Turn, move forward, and turn again to align with the goal
+    chassis.turn_to_angle(60);
+    chassis.drive_distance(20, 36);
+    chassis.turn_to_angle(-36);
+
+    // Go through the alley way
+    chassis.drive_distance(74, 0);
+
+    // Swing, drive forward, swing again, and push the tri balls into the goal
+    chassis.left_swing_to_angle(-45);
+    chassis.drive_distance(20, 315);
+    chassis.left_swing_to_angle(-45);
+    chassis.drive_distance(7, 270);
+    chassis.drive_distance(-7, 270);
+    chassis.drive_distance(7, 270);
+    chassis.drive_distance(-7, 270);
+
+    // Swing to face the other way, move backwards, and turn again, and push the tri balls in
+    chassis.left_swing_to_angle(105);
+    chassis.drive_distance(-40, 15);
+    chassis.turn_to_angle(85);
+    chassis.drive_distance(-12, 100);
+    chassis.left_swing_to_angle(-65);
+    chassis.drive_distance(-18, 165);
+
+    // Move it forward and turn it again towards the goal
+    chassis.turn_to_angle(15);
+    chassis.drive_distance(-2.6, 180);
+    chassis.drive_distance(26, 180);
+    chassis.turn_to_angle(-90);
+
+    // Move back, turn to face the goal, and push the tri balls in again
+    chassis.drive_distance(-11, 270);
+    chassis.turn_to_angle(90);
+    wings.set(true);
+    chassis.drive_distance(-26, 180);
+    chassis.drive_distance(5, 180);
+    chassis.drive_distance(-5, 180);
+    chassis.drive_distance(5, 180);
+}
