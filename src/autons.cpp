@@ -253,4 +253,19 @@ void skills_autonomous()
     chassis.drive_distance(5, 180);
     chassis.drive_distance(-5, 180);
     chassis.drive_distance(5, 180);
+    wings.set(false);
+
+    // Move forward again, turn, move back again, and turn to face the goal again
+    chassis.drive_distance(20, 180);
+    chassis.turn_to_angle(-90);
+    chassis.drive_distance(-6, 90);
+    chassis.turn_to_angle(90);
+
+    // Move back to push in the tri balls
+    wings.set(true);
+    chassis.drive_distance(-19, 180);
+    chassis.drive_distance(-26, 180);
+    chassis.drive_distance(5, 180);
+    chassis.drive_distance(-5, 180);
+    chassis.drive_distance(5, 180);
 }
