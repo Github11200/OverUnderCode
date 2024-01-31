@@ -6,6 +6,7 @@ class Drive;
 extern Drive chassis;
 
 void default_constants();
+void skills_constants();
 
 void drive_test();
 void turn_test();

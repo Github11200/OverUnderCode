@@ -113,8 +113,6 @@ void pre_auton(void)
 {
     // Initializing Robot Configuration. DO NOT REMOVE!
     vexcodeInit();
-    default_constants();
-    CalibrateInertial();
 
     while (auto_started == false)
     {                               // Changing the names below will only change their names on the
@@ -163,7 +161,6 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-    far_side_autonomous();
     auto_started = true;
     switch (current_auton_selection)
     {
@@ -239,8 +236,10 @@ void usercontrol(void)
     // task buttons = task(Buttons);
     // task wings = task(Wings);
 
+    default_constants();
+    skills_constants();
     CalibrateInertial();
-    close_side_autonomous();
+    skills_autonomous();
 
     // User control code here, inside the loop
     while (1)
@@ -248,7 +247,7 @@ void usercontrol(void)
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.
-        // hi jinay
+
         //  ........................................................................
         //  Insert user code here. This is where you use the joystick values to
         //  update your motors, etc.
