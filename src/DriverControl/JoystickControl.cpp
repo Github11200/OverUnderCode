@@ -94,36 +94,3 @@ double findMinAngle(double targetAngle, double currentHeading)
 //         vex::task::sleep(25);
 //     }
 // }
-// uwu daddy gargy,i wanna fuck you so hard ---jinay <3
-int JoystickControl()
-{
-    double increment = 0.4;
-    double decrement = 0.4;
-    double speed = 0;
-    double turn = 0;
-
-    while (true)
-    {
-        cout << speed << endl;
-        if (Controller.ButtonR2.pressing() && speed < 12)
-            speed += increment;
-        else if (Controller.ButtonL2.pressing() && speed > -12)
-            speed -= decrement;
-        else if (!Controller.ButtonL2.pressing() && !Controller.ButtonR2.pressing())
-        {
-            speed = 0;
-            Left.stop(vex::brakeType::coast);
-            Right.stop(vex::brakeType::coast);
-        }
-
-        // Map the turning from the joystick to just 12 volts
-        turn = pow(Controller.Axis4.position(), 2) / (10000 / 12);
-
-        Left.spin(vex::directionType::fwd, speed + turn, vex::voltageUnits::volt);
-        Right.spin(vex::directionType::fwd, speed - turn, vex::voltageUnits::volt);
-
-        vex::task::sleep(25);
-    }
-
-    return 0;
-}
