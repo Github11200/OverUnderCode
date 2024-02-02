@@ -246,16 +246,23 @@ int Buttons()
 
 void usercontrol(void)
 {
-    wings.set(false);
+    default_constants();
+    skills_constants();
+    CalibrateInertial();
+    skills_autonomous();
 
     // task joysticks = task(JoystickControl);
     // task buttons = task(Buttons);
     // task wings = task(Wings);
 
-    default_constants();
-    skills_constants();
-    CalibrateInertial();
-    close_side_autonomous();
+    // Catapult.spin(vex::directionType::fwd, 75, vex::percentUnits::pct);
+    // wait(30, vex::timeUnits::sec);
+    // Catapult.stop(vex::brakeType::coast);
+
+    // default_constants();
+    // skills_constants();
+    // CalibrateInertial();
+    // skills_autonomous();
 
     bool slapperFiring = false;
 

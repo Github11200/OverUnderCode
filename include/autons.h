@@ -18,3 +18,4 @@ void holonomic_odom_test();
 void far_side_autonomous();
 void close_side_autonomous();
 void skills_autonomous();
+void driver_skills_beginning();
