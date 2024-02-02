@@ -95,6 +95,10 @@ void holonomic_odom_test()
 
 void far_side_autonomous()
 {
+    blocker.set(true);
+    wait(0.1, vex::timeUnits::sec);
+    blocker.set(false);
+
     // Intake the tri ball in front of the robot
     Intake.setVelocity(90, vex::percentUnits::pct);
     Intake.spinFor(vex::directionType::rev, 1.55, vex::rotationUnits::rev, false);
@@ -174,9 +178,18 @@ void far_side_autonomous()
 
 void close_side_autonomous()
 {
+    blocker.set(true);
+    wait(0.1, vex::timeUnits::sec);
+    blocker.set(false);
+
     // Turn the robot towards the goal, and move it forward
-    chassis.turn_to_angle(45, 10);
-    chassis.drive_distance(26, 45);
+    chassis.turn_to_angle(33, 10);
+    wings.set(true);
+    wait(0.2, vex::timeUnits::sec);
+    chassis.drive_distance(24, 33);
+    chassis.turn_to_angle(50);
+    chassis.drive_distance(5.2, 50);
+    wings.set(false);
 
     // Turn to face the goal, outtake the tri ball, and push it in
     chassis.turn_to_angle(90);
@@ -186,15 +199,13 @@ void close_side_autonomous()
     chassis.drive_distance(10, 90, 12, 12, 1.5, 200, 300);
 
     // Move back again, and align the robot to get ready to take the tri ball out of the corner
-    chassis.drive_distance(-12);
+    chassis.drive_distance(-15);
     chassis.turn_to_angle(45);
 
-    // // Move back and turn to take the tri ball out of the corner
-    wings.set(true);
-    chassis.drive_distance(-26, 45);
-    wings.set(false);
+    // Move back and turn to take the tri ball out of the corner
+    chassis.drive_distance(-23, 45);
     chassis.turn_to_angle(0);
-    chassis.drive_distance(-32, 0);
+    chassis.drive_distance(-33, 0);
     wings.set(true);
     // // Turn back to 0 degrees, and move back to touch the pole
     // chassis.turn_to_angle(-27);

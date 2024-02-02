@@ -22,6 +22,7 @@ extern vex::motor Intake;
 
 // Pistons
 extern digital_out wings;
+extern digital_out blocker;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

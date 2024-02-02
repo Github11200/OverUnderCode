@@ -28,6 +28,7 @@ motor_group Right = motor_group(FrontRight, MiddleRight, BackRight);
 
 // Pistons
 digital_out wings = digital_out(Brain.ThreeWirePort.H);
+digital_out blocker = digital_out(Brain.ThreeWirePort.A);
 
 // VEXcode generated functions
 

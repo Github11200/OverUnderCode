@@ -205,6 +205,9 @@ void autonomous(void)
 /// @return 0
 int Buttons()
 {
+    bool slapperFiring = false;
+    bool isBlockerUp = false;
+
     while (true)
     {
         IntakeControl();
@@ -212,13 +215,26 @@ int Buttons()
 
         if (Controller.ButtonUp.pressing())
         {
-            deploy();
+            blocker.set(isBlockerUp ? false : true);
+            isBlockerUp = !isBlockerUp;
             wait(500, vex::timeUnits::msec);
         }
 
-        if (Controller.ButtonDown.pressing())
+        if (Controller.ButtonB.pressing())
         {
-            rewindBlocker();
+            if (slapperFiring)
+            {
+                Catapult.stop(vex::brakeType::coast);
+                cout << "Stop" << endl;
+                slapperFiring = false;
+            }
+            else
+            {
+                Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+                cout << "Firing" << endl;
+                slapperFiring = true;
+            }
+
             wait(500, vex::timeUnits::msec);
         }
 
@@ -239,11 +255,32 @@ void usercontrol(void)
     default_constants();
     skills_constants();
     CalibrateInertial();
-    skills_autonomous();
+    close_side_autonomous();
+
+    bool slapperFiring = false;
 
     // User control code here, inside the loop
     while (1)
     {
+        // if (Controller.ButtonB.pressing())
+        // {
+        //     if (slapperFiring)
+        //     {
+        //         Catapult.stop(vex::brakeType::coast);
+        //         cout << "Stop" << endl;
+        //         slapperFiring = false;
+        //     }
+        //     else
+        //     {
+        //         Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+        //         cout << "Firing" << endl;
+        //         slapperFiring = true;
+        //     }
+
+        //     wait(500, vex::timeUnits::msec);
+        // }
+        // Catapult.spin(vex::directionType::fwd, 80, vex::percentUnits::pct);
+
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.
