@@ -235,7 +235,7 @@ void skills_autonomous()
     wings.set(true);
 
     // Start the slapper, and put the wings up again
-    Catapult.spin(vex::directionType::fwd, 75, vex::percentUnits::pct);
+    Catapult.spin(vex::directionType::fwd, 90, vex::percentUnits::pct);
     wait(1, vex::timeUnits::sec);
     Catapult.stop(vex::brakeType::coast);
     wings.set(false);
