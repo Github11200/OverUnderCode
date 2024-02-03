@@ -113,6 +113,7 @@ void pre_auton(void)
 {
     // Initializing Robot Configuration. DO NOT REMOVE!
     vexcodeInit();
+    CalibrateInertial();
 
     while (auto_started == false)
     {                               // Changing the names below will only change their names on the
@@ -161,6 +162,9 @@ void pre_auton(void)
 
 void autonomous(void)
 {
+    default_constants();
+    far_side_autonomous();
+
     auto_started = true;
     switch (current_auton_selection)
     {
@@ -246,14 +250,17 @@ int Buttons()
 
 void usercontrol(void)
 {
-    default_constants();
-    skills_constants();
-    CalibrateInertial();
-    skills_autonomous();
+    // default_constants();
+    // skills_constants();
+    // CalibrateInertial();
+    // skills_autonomous();
 
-    // task joysticks = task(JoystickControl);
-    // task buttons = task(Buttons);
-    // task wings = task(Wings);
+    // Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+    // wait(30, vex::timeUnits::sec);
+    // Catapult.stop(vex::brakeType::coast);
+    task joysticks = task(JoystickControl);
+    task buttons = task(Buttons);
+    task wings = task(Wings);
 
     // Catapult.spin(vex::directionType::fwd, 75, vex::percentUnits::pct);
     // wait(30, vex::timeUnits::sec);

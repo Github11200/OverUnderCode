@@ -73,13 +73,13 @@ int JoystickControl()
         // Calculate the power using the curve (we will leave the turning linear)
         power >
                 0
-            ? power = ((sin((M_PI * (power / 100)) - 1.57) * 0.5) + 0.5) * 100;
+            ? power = ((sin((M_PI * (power / 100)) - 1.57) * 0.5) + 0.5) * 100
             : power = (-((sin((M_PI * (power / 100)) - 1.57) * 0.5) + 0.5)) * 100;
 
         turn >
                 0
-            ? power = ((sin((M_PI * (turn / 100)) - 1.57) * 0.5) + 0.5) * 100;
-            : power = (-((sin((M_PI * (turn / 100)) - 1.57) * 0.5) + 0.5)) * 100;
+            ? turn = ((sin((M_PI * (turn / 100)) - 1.57) * 0.5) + 0.5) * 100
+            : turn = (-((sin((M_PI * (turn / 100)) - 1.57) * 0.5) + 0.5)) * 100;
 
         if (flipControls)
         {

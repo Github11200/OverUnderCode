@@ -235,8 +235,8 @@ void skills_autonomous()
     wings.set(true);
 
     // Start the slapper, and put the wings up again
-    Catapult.spin(vex::directionType::fwd, 90, vex::percentUnits::pct);
-    wait(1, vex::timeUnits::sec);
+    Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+    wait(30, vex::timeUnits::sec);
     Catapult.stop(vex::brakeType::coast);
     wings.set(false);
 
@@ -254,9 +254,9 @@ void skills_autonomous()
     chassis.drive_distance(-17, 135);
     chassis.left_swing_to_angle(90);
     chassis.drive_distance(-15, 90, 12, 12, 0.5, 200, 300);
-    chassis.drive_distance(15, 90, 12, 12, 0.5, 200, 300);
-    chassis.drive_distance(-15, 90, 12, 12, 0.5, 200, 300);
-    chassis.drive_distance(12, 90, 12, 12, 0.5, 200, 300);
+    chassis.drive_distance(25, 90, 12, 12, 0.5, 200, 300);
+    chassis.drive_distance(-25, 90, 12, 12, 0.5, 200, 300);
+    chassis.drive_distance(7, 90, 12, 12, 0.5, 200, 300);
 
     // Swing to face the other way, move backwards, and turn again, and push the tri balls in
     chassis.turn_to_angle(15);
@@ -303,6 +303,8 @@ void skills_autonomous()
     chassis.drive_distance(-5, 180);
     chassis.drive_distance(5, 180);
     wings.set(false);
+
+    // ENDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD YATHARTH
 
     // // Move forward again, turn, move back again, and turn to face the goal again
     // chassis.drive_distance(20, 180);
