@@ -163,7 +163,16 @@ void pre_auton(void)
 void autonomous(void)
 {
     default_constants();
-    far_side_autonomous();
+
+    // Slot 1
+    // far_side_autonomous();
+
+    // Slot 2
+    // close_side_autonomous();
+
+    // Slot 3
+    skills_constants();
+    skills_autonomous();
 
     auto_started = true;
     switch (current_auton_selection)
@@ -209,7 +218,6 @@ void autonomous(void)
 /// @return 0
 int Buttons()
 {
-    bool slapperFiring = false;
     bool isBlockerUp = false;
 
     while (true)
@@ -224,24 +232,6 @@ int Buttons()
             wait(500, vex::timeUnits::msec);
         }
 
-        if (Controller.ButtonB.pressing())
-        {
-            if (slapperFiring)
-            {
-                Catapult.stop(vex::brakeType::coast);
-                cout << "Stop" << endl;
-                slapperFiring = false;
-            }
-            else
-            {
-                Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-                cout << "Firing" << endl;
-                slapperFiring = true;
-            }
-
-            wait(500, vex::timeUnits::msec);
-        }
-
         vex::task::sleep(20);
     }
 
@@ -250,17 +240,17 @@ int Buttons()
 
 void usercontrol(void)
 {
-    // default_constants();
-    // skills_constants();
-    // CalibrateInertial();
-    // skills_autonomous();
+    default_constants();
+    skills_constants();
+    CalibrateInertial();
+    skills_autonomous();
 
     // Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
     // wait(30, vex::timeUnits::sec);
     // Catapult.stop(vex::brakeType::coast);
-    task joysticks = task(JoystickControl);
-    task buttons = task(Buttons);
-    task wings = task(Wings);
+    // task joysticks = task(JoystickControl);
+    // task buttons = task(Buttons);
+    // task wings = task(Wings);
 
     // Catapult.spin(vex::directionType::fwd, 75, vex::percentUnits::pct);
     // wait(30, vex::timeUnits::sec);
@@ -271,11 +261,14 @@ void usercontrol(void)
     // CalibrateInertial();
     // skills_autonomous();
 
-    bool slapperFiring = false;
+    // bool slapperFiring = false;
 
     // User control code here, inside the loop
     while (1)
     {
+
+        // Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+
         // if (Controller.ButtonB.pressing())
         // {
         //     if (slapperFiring)
