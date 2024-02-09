@@ -245,49 +245,16 @@ void usercontrol(void)
     CalibrateInertial();
     skills_autonomous();
 
-    // Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-    // wait(30, vex::timeUnits::sec);
-    // Catapult.stop(vex::brakeType::coast);
-    // task joysticks = task(JoystickControl);
-    // task buttons = task(Buttons);
-    // task wings = task(Wings);
+    // This function is to run the beginning of the skills auto in the driver
+    driver_skills_beginning();
 
-    // Catapult.spin(vex::directionType::fwd, 75, vex::percentUnits::pct);
-    // wait(30, vex::timeUnits::sec);
-    // Catapult.stop(vex::brakeType::coast);
-
-    // default_constants();
-    // skills_constants();
-    // CalibrateInertial();
-    // skills_autonomous();
-
-    // bool slapperFiring = false;
+    task joysticks = task(JoystickControl);
+    task buttons = task(Buttons);
+    task wings = task(Wings);
 
     // User control code here, inside the loop
     while (1)
     {
-
-        // Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-
-        // if (Controller.ButtonB.pressing())
-        // {
-        //     if (slapperFiring)
-        //     {
-        //         Catapult.stop(vex::brakeType::coast);
-        //         cout << "Stop" << endl;
-        //         slapperFiring = false;
-        //     }
-        //     else
-        //     {
-        //         Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-        //         cout << "Firing" << endl;
-        //         slapperFiring = true;
-        //     }
-
-        //     wait(500, vex::timeUnits::msec);
-        // }
-        // Catapult.spin(vex::directionType::fwd, 80, vex::percentUnits::pct);
-
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.

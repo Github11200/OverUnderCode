@@ -295,33 +295,9 @@ void skills_autonomous()
     chassis.drive_distance(10, 210);
     chassis.turn_to_angle(180);
     chassis.drive_distance(10, 180);
+    chassis.turn_to_angle(0);
     wings.set(false);
-
-    // Move back, turn to face the goal, and push the tri balls in again chassis.drive_distance(-23, 180);
-    // chassis.drive_distance(10, 180);
-    // chassis.turn_to_angle(180);
-    // wings.set(true);
-    // chassis.drive_distance(-26, 180);
-    // chassis.drive_distance(15, 180);
-    // chassis.drive_distance(-15, 180);
-    // chassis.drive_distance(15, 180);
-    // wings.set(false);
-
-    // ENDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD YATHARTH
-
-    // // Move forward again, turn, move back again, and turn to face the goal again
-    // chassis.drive_distance(20, 180);
-    // chassis.turn_to_angle(90);
-    // chassis.drive_distance(-6, 90);
-    // chassis.turn_to_angle(190);
-
-    // Move back to push in the tri balls
-    // wings.set(true);
-    // chassis.drive_distance(-19, 180);
-    // chassis.drive_distance(-26, 180);
-    // chassis.drive_distance(5, 180);
-    // chassis.drive_distance(-5, 180);
-    // chassis.drive_distance(5, 180);
+    chassis.drive_distance(-1000, 0);
 }
 
 void driver_skills_beginning()
@@ -331,8 +307,8 @@ void driver_skills_beginning()
     blocker.set(false);
 
     // Turn right, move back, and swing to push the tri ball into the goal
-    chassis.turn_to_angle(45);
-    chassis.drive_distance(-26);
+    chassis.turn_to_angle(45, 12, 1, 200, 500);
+    chassis.drive_distance(-26, 45, 12, 12, 1.5, 200, 2000);
     chassis.turn_to_angle(90);
     chassis.drive_distance(-9, 90, 12, 12);
     chassis.drive_distance(9);
@@ -342,7 +318,19 @@ void driver_skills_beginning()
     chassis.drive_distance(9, 90);
     chassis.turn_to_angle(25);
     chassis.drive_distance(11, 25);
-    chassis.turn_to_angle(341);
+    chassis.turn_to_angle(325); // 341
     chassis.drive_distance(-5, 341);
     wings.set(true);
+
+    // Start the slapper, and put the wings up again
+    Catapult.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+    wait(30, vex::timeUnits::sec);
+    Catapult.stop(vex::brakeType::coast);
+    wings.set(false);
+
+    // Turn, move forward, and turn again to align with the goal
+    chassis.turn_to_angle(36);
+    chassis.drive_distance(19, 36);
+    chassis.turn_to_angle(0);
+    chassis.turn_to_angle(180);
 }
