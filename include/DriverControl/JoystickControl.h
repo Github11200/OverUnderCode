@@ -14,6 +14,11 @@ double findMinAngle(double targetAngle, double currentHeading);
 /// @return 1 or -1 based on whether the input number is positive or negative
 int sgn(double num);
 
+/// @brief This function remaps the joystick value to make it smoother
+/// @param xAxis - this is the current x axis of the controlelr
+/// @return Returns the remapped value for the speed
+double remap(double xAxis);
+
 /// @brief Controls the drivetrain speed based on the joystick inputs
 /// @return 0
 int JoystickControl();

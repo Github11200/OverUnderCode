@@ -21,6 +21,20 @@ double findMinAngle(double targetAngle, double currentHeading)
     return minAngle;
 }
 
+double remap(double xAxis)
+{
+    double result = 0;
+    double cConstants[4] = {
+        0, 0.736, -0.43, 1};
+
+    result += pow((1 - xAxis), 3) * cConstants[0];
+    result += 3 * xAxis * pow((1 - xAxis), 2) * cConstants[1];
+    result += 3 * pow(xAxis, 2) * (1 - xAxis) * cConstants[2];
+    result += pow(xAxis, 3) * cConstants[3];
+
+    return result * 100;
+}
+
 int JoystickControl()
 {
     // Get the power and turn from the controller joysticks, and set the deadzone to 5 (this reduces controller drift)
@@ -75,16 +89,19 @@ int JoystickControl()
                 0
             ? power = ((sin((M_PI * (power / 100)) - 1.57) * 0.5) + 0.5) * 100
             : power = (-((sin((M_PI * (power / 100)) - 1.57) * 0.5) + 0.5)) * 100;
+        // power > 0 ? power = remap(power / 100) : power = (remap(power / 100));
 
         turn >
                 0
             ? turn = ((sin((M_PI * (turn / 100)) - 1.57) * 0.5) + 0.5) * 100
             : turn = (-((sin((M_PI * (turn / 100)) - 1.57) * 0.5) + 0.5)) * 100;
 
+        // turn > 0 ? turn = remap(turn / 100) : turn = (remap(turn / 100));
+
         if (flipControls)
         {
-            power = -power;
-            turn = -turn;
+            power = power;
+            turn = turn;
             left = power + turn;
             right = power - turn;
         }

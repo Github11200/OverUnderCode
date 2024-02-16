@@ -240,17 +240,18 @@ int Buttons()
 
 void usercontrol(void)
 {
-    default_constants();
-    skills_constants();
-    CalibrateInertial();
-    skills_autonomous();
+    // default_constants();
+    // skills_constants();
+    // CalibrateInertial();
+    // chassis.Gyro.setRotation(90, vex::rotationUnits::deg);
+    // skills_autonomous();
 
     // This function is to run the beginning of the skills auto in the driver
-    driver_skills_beginning();
+    // driver_skills_beginning();
 
-    task joysticks = task(JoystickControl);
-    task buttons = task(Buttons);
-    task wings = task(Wings);
+    // task joysticks = task(JoystickControl);
+    // task buttons = task(Buttons);
+    // task wings = task(Wings);
 
     // User control code here, inside the loop
     while (1)

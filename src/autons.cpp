@@ -232,7 +232,7 @@ void skills_autonomous()
     chassis.turn_to_angle(25);
     chassis.drive_distance(11, 25);
     chassis.turn_to_angle(325); // 341
-    chassis.drive_distance(-5, 341);
+    chassis.drive_distance(-5, 339);
     wings.set(true);
 
     // Start the slapper, and put the wings up again
@@ -264,12 +264,12 @@ void skills_autonomous()
     chassis.drive_distance(-44, 15);
     chassis.turn_to_angle(90);
     wings.set(true);
-    chassis.drive_distance(-15, 100);
-    chassis.turn_to_angle(170);
-    chassis.drive_distance(-28, 170, 12, 1, 1, 150, 1100);
+    chassis.drive_distance(-5, 100);
+    chassis.turn_to_angle(160);
+    chassis.drive_distance(-28, 160, 12, 1, 1, 150, 1100);
 
     // Move it forward, turn, move it back, and turn so it's facing the goal again
-    chassis.drive_distance(32, 170);
+    chassis.drive_distance(32, 160);
     chassis.turn_to_angle(90);
     chassis.drive_distance(-20, 90);
     chassis.turn_to_angle(180);
@@ -284,12 +284,12 @@ void skills_autonomous()
     // Move forward, turn, move back, and turn again to face the goal
     chassis.drive_distance(22, 180);
     chassis.turn_to_angle(90);
-    chassis.drive_distance(-25, 90);
+    chassis.drive_distance(-28, 90);
     wings.set(true);
     chassis.turn_to_angle(210);
 
     // Push the tri balls in for the last time
-    chassis.drive_distance(-28, 210);
+    chassis.drive_distance(-33, 210);
     chassis.drive_distance(10, 210);
     chassis.drive_distance(-10, 210);
     chassis.drive_distance(10, 210);
@@ -319,7 +319,7 @@ void driver_skills_beginning()
     chassis.turn_to_angle(25);
     chassis.drive_distance(11, 25);
     chassis.turn_to_angle(325); // 341
-    chassis.drive_distance(-5, 341);
+    chassis.drive_distance(-5, 329);
     wings.set(true);
 
     // Start the slapper, and put the wings up again
@@ -327,10 +327,4 @@ void driver_skills_beginning()
     wait(30, vex::timeUnits::sec);
     Catapult.stop(vex::brakeType::coast);
     wings.set(false);
-
-    // Turn, move forward, and turn again to align with the goal
-    chassis.turn_to_angle(36);
-    chassis.drive_distance(19, 36);
-    chassis.turn_to_angle(0);
-    chassis.turn_to_angle(180);
 }
